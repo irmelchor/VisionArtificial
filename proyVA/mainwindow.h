@@ -36,8 +36,8 @@ private:
 
     VideoCapture *cap;
     ImgViewer *visorS, *visorD;
-    Mat colorImage, grayImage, loadImg;
-    Mat destColorImage, destGrayImage, destLoadImg;
+    Mat colorImage, grayImage;
+    Mat destColorImage, destGrayImage;
     bool winSelected;
     Rect imageWindow;
 
@@ -49,6 +49,10 @@ public slots:
     /********************/
 
     void loadFromFile(/*bool load*/);
+    void saveToFile();
+
+    void resizeWin();
+    void enlargeWin();
 
     /********************/
     void selectWindow(QPointF p, int w, int h);
