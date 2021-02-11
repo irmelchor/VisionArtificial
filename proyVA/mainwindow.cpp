@@ -28,6 +28,8 @@ MainWindow::MainWindow(QWidget *parent) :
     /********************/
     connect(ui->loadButton,SIGNAL(clicked(bool)),this,SLOT(loadFromFile(void)));
     connect(ui->saveButton,SIGNAL(clicked(bool)),this,SLOT(saveToFile(void)));
+    connect(ui->copyChannelsButton,SIGNAL(clicked(bool)),this,SLOT(copyChannels(void)));
+    connect(ui->copyWindowButton,SIGNAL(clicked(bool)),this,SLOT(copyWindow(void)));
     connect(ui->enlargeButton,SIGNAL(clicked(bool)),this,SLOT(enlargeWin(void)));
     connect(ui->resizeButton,SIGNAL(clicked(bool)),this,SLOT(resizeWin(void)));
 
@@ -140,6 +142,47 @@ void MainWindow::saveToFile(){
     connect(&timer,SIGNAL(timeout()),this,SLOT(compute()));
 }
 
+//Copia en destColorImage los canales de las casillas activas. Si no está activa, se considera 0
+//imagen2=CV_RGB(1,0,0); //inicializar imagen a un color
+void MainWindow::copyChannels(){
+
+    disconnect(&timer,SIGNAL(timeout()),this,SLOT(compute()));
+
+    std::vector<Mat> channels;
+    split(colorImage, channels);
+
+    Mat zero = Mat::zeros(colorImage.size(), CV_8UC3);
+
+    if(ui->rCheck->isChecked()){
+    std::vector<Mat> imageDest = { channels[0], zero, zero };
+    }
+
+    if(ui->gCheck->isChecked()){
+    std::vector<Mat> imageDest = { zero, channels[1], zero };
+    }
+
+    if(ui->bCheck->isChecked()){
+    std::vector<Mat> imageDest = { zero, zero, channels[2] };
+    }
+
+
+
+    Mat rdst, gdst, bdst;
+
+    //merge(, destColorImage);
+
+    imshow("Channel", destColorImage);
+
+
+    connect(&timer,SIGNAL(timeout()),this,SLOT(compute()));
+
+}
+
+//Copia literalmente en el centro de la ventana destino sin escalar
+void MainWindow::copyWindow(){
+
+}
+
 
 void MainWindow::resizeWin(){
 
@@ -172,7 +215,10 @@ void MainWindow::resizeWin(){
 void MainWindow::enlargeWin(){
     disconnect(&timer,SIGNAL(timeout()),this,SLOT(compute()));
 
-    Rect destImageWindow;
+    double fv = 240/imageWindow.height;
+    double fh = 320/imageWindow.width;
+
+    Rect destImageWindow(fv,fh,imageWindow.width,imageWindow.height);
 
     Mat winColor = colorImage(imageWindow);
     Mat winGray = grayImage(imageWindow);
@@ -182,9 +228,6 @@ void MainWindow::enlargeWin(){
 
     Mat winDestColor = destColorImage(destImageWindow);
     Mat winDestGray = destGrayImage(destImageWindow);
-
-    double fv = 240/imageWindow.height;
-    double fh = 320/imageWindow.width;
 
     double menor;
         if(fv<fh)

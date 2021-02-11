@@ -21,8 +21,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_MainWindow_t {
-    QByteArrayData data[16];
-    char stringdata0[148];
+    QByteArrayData data[18];
+    char stringdata0[172];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -40,20 +40,22 @@ QT_MOC_LITERAL(5, 45, 17), // "change_color_gray"
 QT_MOC_LITERAL(6, 63, 5), // "color"
 QT_MOC_LITERAL(7, 69, 12), // "loadFromFile"
 QT_MOC_LITERAL(8, 82, 10), // "saveToFile"
-QT_MOC_LITERAL(9, 93, 9), // "resizeWin"
-QT_MOC_LITERAL(10, 103, 10), // "enlargeWin"
-QT_MOC_LITERAL(11, 114, 12), // "selectWindow"
-QT_MOC_LITERAL(12, 127, 1), // "p"
-QT_MOC_LITERAL(13, 129, 1), // "w"
-QT_MOC_LITERAL(14, 131, 1), // "h"
-QT_MOC_LITERAL(15, 133, 14) // "deselectWindow"
+QT_MOC_LITERAL(9, 93, 12), // "copyChannels"
+QT_MOC_LITERAL(10, 106, 10), // "copyWindow"
+QT_MOC_LITERAL(11, 117, 9), // "resizeWin"
+QT_MOC_LITERAL(12, 127, 10), // "enlargeWin"
+QT_MOC_LITERAL(13, 138, 12), // "selectWindow"
+QT_MOC_LITERAL(14, 151, 1), // "p"
+QT_MOC_LITERAL(15, 153, 1), // "w"
+QT_MOC_LITERAL(16, 155, 1), // "h"
+QT_MOC_LITERAL(17, 157, 14) // "deselectWindow"
 
     },
     "MainWindow\0compute\0\0start_stop_capture\0"
     "start\0change_color_gray\0color\0"
-    "loadFromFile\0saveToFile\0resizeWin\0"
-    "enlargeWin\0selectWindow\0p\0w\0h\0"
-    "deselectWindow"
+    "loadFromFile\0saveToFile\0copyChannels\0"
+    "copyWindow\0resizeWin\0enlargeWin\0"
+    "selectWindow\0p\0w\0h\0deselectWindow"
 };
 #undef QT_MOC_LITERAL
 
@@ -63,7 +65,7 @@ static const uint qt_meta_data_MainWindow[] = {
        8,       // revision
        0,       // classname
        0,    0, // classinfo
-       9,   14, // methods
+      11,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -71,15 +73,17 @@ static const uint qt_meta_data_MainWindow[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags
-       1,    0,   59,    2, 0x0a /* Public */,
-       3,    1,   60,    2, 0x0a /* Public */,
-       5,    1,   63,    2, 0x0a /* Public */,
-       7,    0,   66,    2, 0x0a /* Public */,
-       8,    0,   67,    2, 0x0a /* Public */,
-       9,    0,   68,    2, 0x0a /* Public */,
-      10,    0,   69,    2, 0x0a /* Public */,
-      11,    3,   70,    2, 0x0a /* Public */,
-      15,    0,   77,    2, 0x0a /* Public */,
+       1,    0,   69,    2, 0x0a /* Public */,
+       3,    1,   70,    2, 0x0a /* Public */,
+       5,    1,   73,    2, 0x0a /* Public */,
+       7,    0,   76,    2, 0x0a /* Public */,
+       8,    0,   77,    2, 0x0a /* Public */,
+       9,    0,   78,    2, 0x0a /* Public */,
+      10,    0,   79,    2, 0x0a /* Public */,
+      11,    0,   80,    2, 0x0a /* Public */,
+      12,    0,   81,    2, 0x0a /* Public */,
+      13,    3,   82,    2, 0x0a /* Public */,
+      17,    0,   89,    2, 0x0a /* Public */,
 
  // slots: parameters
     QMetaType::Void,
@@ -89,7 +93,9 @@ static const uint qt_meta_data_MainWindow[] = {
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
-    QMetaType::Void, QMetaType::QPointF, QMetaType::Int, QMetaType::Int,   12,   13,   14,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void, QMetaType::QPointF, QMetaType::Int, QMetaType::Int,   14,   15,   16,
     QMetaType::Void,
 
        0        // eod
@@ -106,10 +112,12 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 2: _t->change_color_gray((*reinterpret_cast< bool(*)>(_a[1]))); break;
         case 3: _t->loadFromFile(); break;
         case 4: _t->saveToFile(); break;
-        case 5: _t->resizeWin(); break;
-        case 6: _t->enlargeWin(); break;
-        case 7: _t->selectWindow((*reinterpret_cast< QPointF(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2])),(*reinterpret_cast< int(*)>(_a[3]))); break;
-        case 8: _t->deselectWindow(); break;
+        case 5: _t->copyChannels(); break;
+        case 6: _t->copyWindow(); break;
+        case 7: _t->resizeWin(); break;
+        case 8: _t->enlargeWin(); break;
+        case 9: _t->selectWindow((*reinterpret_cast< QPointF(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2])),(*reinterpret_cast< int(*)>(_a[3]))); break;
+        case 10: _t->deselectWindow(); break;
         default: ;
         }
     }
@@ -144,13 +152,13 @@ int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 9)
+        if (_id < 11)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 9;
+        _id -= 11;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 9)
+        if (_id < 11)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 9;
+        _id -= 11;
     }
     return _id;
 }

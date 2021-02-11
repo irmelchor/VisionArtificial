@@ -51,7 +51,8 @@ public slots:
 
     void loadFromFile(/*bool load*/);
     void saveToFile();
-
+    void copyChannels();
+    void copyWindow();
     void resizeWin();
     void enlargeWin();
 
