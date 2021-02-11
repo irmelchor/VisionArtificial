@@ -9,6 +9,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     cap = new VideoCapture(0);
     winSelected = false;
+    colorSelected = false;
 
     colorImage.create(240,320,CV_8UC3);
     grayImage.create(240,320,CV_8UC1);
@@ -27,6 +28,9 @@ MainWindow::MainWindow(QWidget *parent) :
     /********************/
     connect(ui->loadButton,SIGNAL(clicked(bool)),this,SLOT(loadFromFile(void)));
     connect(ui->saveButton,SIGNAL(clicked(bool)),this,SLOT(saveToFile(void)));
+    connect(ui->enlargeButton,SIGNAL(clicked(bool)),this,SLOT(enlargeWin(void)));
+    connect(ui->resizeButton,SIGNAL(clicked(bool)),this,SLOT(resizeWin(void)));
+
 
     /********************/
 
@@ -88,16 +92,18 @@ void MainWindow::change_color_gray(bool color)
         ui->colorButton->setText("Gray image");
         visorS->setImage(&colorImage);
         visorD->setImage(&destColorImage);
+        colorSelected = true;
     }
     else
     {
         ui->colorButton->setText("Color image");
         visorS->setImage(&grayImage);
         visorD->setImage(&destGrayImage);
+        colorSelected = false;
     }
 }
 
-void MainWindow::loadFromFile(/*bool load*/){
+void MainWindow::loadFromFile(){
 
     disconnect(&timer,SIGNAL(timeout()),this,SLOT(compute()));
     ui->captureButton->setCheckable(false);
@@ -121,32 +127,64 @@ void MainWindow::saveToFile(){
 
     QString file = QFileDialog::getSaveFileName(this, "Save file");
     std::string rutafichero= file.toStdString();
+    Mat saveColorImage;
 
-    cvtColor(destColorImage,destColorImage,COLOR_RGB2BGR);
-    //cvtColor(destGrayImage,COLOR_RGB2BGR);
+    if(colorSelected){
+        cvtColor(destColorImage,saveColorImage,COLOR_RGB2BGR);
+        imwrite(rutafichero,saveColorImage);
 
-    imwrite(rutafichero,destColorImage);
-    imwrite(rutafichero,destGrayImage);
+    }else{
+        imwrite(rutafichero,destGrayImage);
+    }
+
     connect(&timer,SIGNAL(timeout()),this,SLOT(compute()));
 }
 
 
 void MainWindow::resizeWin(){
 
+    disconnect(&timer,SIGNAL(timeout()),this,SLOT(compute()));
+
+    Rect destImageWindow;
+
+    Mat winColor = colorImage(imageWindow);
+    Mat winGray = grayImage(imageWindow);
+
+    destImageWindow.height = imageWindow.height;
+    destImageWindow.width = imageWindow.width;
+
+    Mat winDestColor = destColorImage(destImageWindow);
+    Mat winDestGray = destGrayImage(destImageWindow);
+
+
+    cv::resize(winColor, winDestColor, Size(320,240));
+    cv::resize(winGray, winDestGray, Size(320,240));
+
+    winDestColor.copyTo(destColorImage);
+    winDestGray.copyTo(destGrayImage);
+
+
+    connect(&timer,SIGNAL(timeout()),this,SLOT(compute()));
+
+
 }
 
 void MainWindow::enlargeWin(){
     disconnect(&timer,SIGNAL(timeout()),this,SLOT(compute()));
 
-    Rect destRect;
+    Rect destImageWindow;
 
     Mat winColor = colorImage(imageWindow);
     Mat winGray = grayImage(imageWindow);
 
+    destImageWindow.height = imageWindow.height;
+    destImageWindow.width = imageWindow.width;
 
+    Mat winDestColor = destColorImage(destImageWindow);
+    Mat winDestGray = destGrayImage(destImageWindow);
 
-    double fv = (240-imageWindow.height)/2;
-    double fh = (320-imageWindow.width)/2;
+    double fv = 240/imageWindow.height;
+    double fh = 320/imageWindow.width;
 
     double menor;
         if(fv<fh)
@@ -154,10 +192,11 @@ void MainWindow::enlargeWin(){
         else
            menor=fh;
 
-    cv::resize(winColor, winColor, Size(),menor,menor,INTER_LINEAR);
-    cv::resize(winGray, winGray, Size(),menor,menor,INTER_LINEAR);
+    cv::resize(winColor, winDestColor, Size(),menor,menor,INTER_LINEAR);
+    cv::resize(winGray, winDestGray, Size(),menor,menor,INTER_LINEAR);
 
-    copyTo(winColor,destColorImage,);
+    winDestColor.copyTo(destColorImage);
+    winDestGray.copyTo(destGrayImage);
 
 
     connect(&timer,SIGNAL(timeout()),this,SLOT(compute()));

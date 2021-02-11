@@ -40,6 +40,7 @@ private:
     Mat destColorImage, destGrayImage;
     bool winSelected;
     Rect imageWindow;
+    bool colorSelected;
 
 
 public slots:

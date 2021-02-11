@@ -1,0 +1,57 @@
+Para cambiar de RGB->BGR
+función: (cvtColor)
+
+Para redimensionar la imagen: cv::resize, de esta manera indicamos que el resize es de opencv y no de qt.
+
+Para "quitar" un canal, le damos un valor de 0.
+
+Métodos para definir ventanas:
+Mat img.
+Una ventana viene dada por la posición de arriba a la izquierda, (x,y) y tiene w y h(altura).
+Para indicar el trozo de la imagen:
+Mat win = img(Rect(x,y, w, h)) y eso me devuelve un Mat asociado a ese trozo.
+No estamos creando una imagen nueva, sino que estamos accediendo a una parte de los datos de la imagen original.
+
+Otra cosa que hay que hacer es que si pinchamos en un pixel, nos tiene que dar los valores de RGB, si es color, y el de Gray si estamos en grises.
+
+Clase estática tooltip para hacer ese texto emergente.
+
+img.at<char (si es de grises) o vector de 3 posiciones si es RGB>
+
+Se puede hacer tanto para leer como escribir
+
+
+
+  // Mat imagen2=img.clone();
+    //imagen2=CV_RGB(1,0,0); //inicializar imagen a un color
+   // imshow("ventana2",imagen2);
+   
+   imwrite("nuevonombre.png",img);
+   
+   
+     //Convertimos MAt a QImage
+
+   // QImage imagen1 = QImage((uchar*)loadImg.data,loadImg.cols,loadImg.rows,loadImg.step,QImage::Format_RGB888);
+
+   // ui->label->setPixmap(QPixmap::fromImage(imagen1));
+ //visorS->setImage(&img);
+    //ui->imageFrameS->setPixmap(QPixmap::fromImage(QImage(img.data,img.cols,img.rows,img.step, QImage::Format_RGB888)));
+
+
+en la copia de imagen, para centrar la imagen:
+la franja de arriba sería: (240-h)/2
+
+
+
+Enlarge
+//calcular los factores de escala fv=240/h,fh=320/w
+    double fv = 240/imageWindow.height;
+    double fh = 320/imageWindow.width;
+
+    double menor;
+    if(fv<fh)
+         menor=fv;
+    else
+        menor=fh;
+
+    cv::resize(loadImg, loadImg, Size(320, 240));

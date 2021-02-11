@@ -21,8 +21,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_MainWindow_t {
-    QByteArrayData data[15];
-    char stringdata0[137];
+    QByteArrayData data[16];
+    char stringdata0[148];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -41,17 +41,19 @@ QT_MOC_LITERAL(6, 63, 5), // "color"
 QT_MOC_LITERAL(7, 69, 12), // "loadFromFile"
 QT_MOC_LITERAL(8, 82, 10), // "saveToFile"
 QT_MOC_LITERAL(9, 93, 9), // "resizeWin"
-QT_MOC_LITERAL(10, 103, 12), // "selectWindow"
-QT_MOC_LITERAL(11, 116, 1), // "p"
-QT_MOC_LITERAL(12, 118, 1), // "w"
-QT_MOC_LITERAL(13, 120, 1), // "h"
-QT_MOC_LITERAL(14, 122, 14) // "deselectWindow"
+QT_MOC_LITERAL(10, 103, 10), // "enlargeWin"
+QT_MOC_LITERAL(11, 114, 12), // "selectWindow"
+QT_MOC_LITERAL(12, 127, 1), // "p"
+QT_MOC_LITERAL(13, 129, 1), // "w"
+QT_MOC_LITERAL(14, 131, 1), // "h"
+QT_MOC_LITERAL(15, 133, 14) // "deselectWindow"
 
     },
     "MainWindow\0compute\0\0start_stop_capture\0"
     "start\0change_color_gray\0color\0"
     "loadFromFile\0saveToFile\0resizeWin\0"
-    "selectWindow\0p\0w\0h\0deselectWindow"
+    "enlargeWin\0selectWindow\0p\0w\0h\0"
+    "deselectWindow"
 };
 #undef QT_MOC_LITERAL
 
@@ -61,7 +63,7 @@ static const uint qt_meta_data_MainWindow[] = {
        8,       // revision
        0,       // classname
        0,    0, // classinfo
-       8,   14, // methods
+       9,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -69,14 +71,15 @@ static const uint qt_meta_data_MainWindow[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags
-       1,    0,   54,    2, 0x0a /* Public */,
-       3,    1,   55,    2, 0x0a /* Public */,
-       5,    1,   58,    2, 0x0a /* Public */,
-       7,    0,   61,    2, 0x0a /* Public */,
-       8,    0,   62,    2, 0x0a /* Public */,
-       9,    0,   63,    2, 0x0a /* Public */,
-      10,    3,   64,    2, 0x0a /* Public */,
-      14,    0,   71,    2, 0x0a /* Public */,
+       1,    0,   59,    2, 0x0a /* Public */,
+       3,    1,   60,    2, 0x0a /* Public */,
+       5,    1,   63,    2, 0x0a /* Public */,
+       7,    0,   66,    2, 0x0a /* Public */,
+       8,    0,   67,    2, 0x0a /* Public */,
+       9,    0,   68,    2, 0x0a /* Public */,
+      10,    0,   69,    2, 0x0a /* Public */,
+      11,    3,   70,    2, 0x0a /* Public */,
+      15,    0,   77,    2, 0x0a /* Public */,
 
  // slots: parameters
     QMetaType::Void,
@@ -85,7 +88,8 @@ static const uint qt_meta_data_MainWindow[] = {
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
-    QMetaType::Void, QMetaType::QPointF, QMetaType::Int, QMetaType::Int,   11,   12,   13,
+    QMetaType::Void,
+    QMetaType::Void, QMetaType::QPointF, QMetaType::Int, QMetaType::Int,   12,   13,   14,
     QMetaType::Void,
 
        0        // eod
@@ -103,8 +107,9 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 3: _t->loadFromFile(); break;
         case 4: _t->saveToFile(); break;
         case 5: _t->resizeWin(); break;
-        case 6: _t->selectWindow((*reinterpret_cast< QPointF(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2])),(*reinterpret_cast< int(*)>(_a[3]))); break;
-        case 7: _t->deselectWindow(); break;
+        case 6: _t->enlargeWin(); break;
+        case 7: _t->selectWindow((*reinterpret_cast< QPointF(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2])),(*reinterpret_cast< int(*)>(_a[3]))); break;
+        case 8: _t->deselectWindow(); break;
         default: ;
         }
     }
@@ -139,13 +144,13 @@ int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 8)
+        if (_id < 9)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 8;
+        _id -= 9;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 8)
+        if (_id < 9)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 8;
+        _id -= 9;
     }
     return _id;
 }
