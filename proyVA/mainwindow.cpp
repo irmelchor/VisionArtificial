@@ -105,6 +105,7 @@ void MainWindow::change_color_gray(bool color)
     }
 }
 
+
 void MainWindow::loadFromFile(){
 
     disconnect(&timer,SIGNAL(timeout()),this,SLOT(compute()));
@@ -123,6 +124,7 @@ void MainWindow::loadFromFile(){
     ui->captureButton->setCheckable(true);
     start_stop_capture(true);
 }
+
 
 void MainWindow::saveToFile(){
     disconnect(&timer,SIGNAL(timeout()),this,SLOT(compute()));
@@ -175,12 +177,27 @@ void MainWindow::copyChannels(){
 
 
     connect(&timer,SIGNAL(timeout()),this,SLOT(compute()));
-
 }
 
-//Copia literalmente en el centro de la ventana destino sin escalar
 void MainWindow::copyWindow(){
 
+    disconnect(&timer,SIGNAL(timeout()),this,SLOT(compute()));
+
+    double fv = (240-imageWindow.height)/2;
+    double fh = (320-imageWindow.width)/2;
+
+    Rect destImageWindow(fh,fv,imageWindow.width,imageWindow.height);
+
+    Mat winColor = colorImage(imageWindow);
+    Mat winGray = grayImage(imageWindow);
+
+    Mat winDestColor = destColorImage(destImageWindow);
+    Mat winDestGray = destGrayImage(destImageWindow);
+
+    winColor.copyTo(winDestColor);
+    winGray.copyTo(winDestGray);
+
+    connect(&timer,SIGNAL(timeout()),this,SLOT(compute()));
 }
 
 
@@ -208,42 +225,44 @@ void MainWindow::resizeWin(){
 
 
     connect(&timer,SIGNAL(timeout()),this,SLOT(compute()));
-
-
 }
 
+
 void MainWindow::enlargeWin(){
+
     disconnect(&timer,SIGNAL(timeout()),this,SLOT(compute()));
 
     double fv = 240/imageWindow.height;
     double fh = 320/imageWindow.width;
 
-    Rect destImageWindow(fv,fh,imageWindow.width,imageWindow.height);
+    Rect destImageWindow;//(fh,fv,imageWindow.width,imageWindow.height);
 
     Mat winColor = colorImage(imageWindow);
     Mat winGray = grayImage(imageWindow);
-
-    destImageWindow.height = imageWindow.height;
-    destImageWindow.width = imageWindow.width;
 
     Mat winDestColor = destColorImage(destImageWindow);
     Mat winDestGray = destGrayImage(destImageWindow);
 
     double menor;
-        if(fv<fh)
-            menor=fv;
-        else
-           menor=fh;
+    if(fv<fh){
+       menor=fv;
+    }else{
+       menor=fh;
+    }
 
     cv::resize(winColor, winDestColor, Size(),menor,menor,INTER_LINEAR);
     cv::resize(winGray, winDestGray, Size(),menor,menor,INTER_LINEAR);
 
+    //winColor.copyTo(winDestColor);
+    //winGray.copyTo(winDestGray);
+
     winDestColor.copyTo(destColorImage);
     winDestGray.copyTo(destGrayImage);
 
+    //imshow("Color",destColorImage);
+    //imshow("Gray",destGrayImage);
 
     connect(&timer,SIGNAL(timeout()),this,SLOT(compute()));
-
 }
 
 

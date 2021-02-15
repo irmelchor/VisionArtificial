@@ -29,7 +29,8 @@ Se puede hacer tanto para leer como escribir
    imwrite("nuevonombre.png",img);
    
    
-     //Convertimos MAt a QImage
+     //Convertimos MAt a QImage//imagen2=CV_RGB(1,0,0); //inicializar imagen a un color
+
 
    // QImage imagen1 = QImage((uchar*)loadImg.data,loadImg.cols,loadImg.rows,loadImg.step,QImage::Format_RGB888);
 
