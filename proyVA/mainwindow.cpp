@@ -32,6 +32,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->copyWindowButton,SIGNAL(clicked(bool)),this,SLOT(copyWindow(void)));
     connect(ui->enlargeButton,SIGNAL(clicked(bool)),this,SLOT(enlargeWin(void)));
     connect(ui->resizeButton,SIGNAL(clicked(bool)),this,SLOT(resizeWin(void)));
+    connect(visorS,SIGNAL(mouseClick()),this,SLOT(pixelValue()));
 
 
     /********************/
@@ -127,6 +128,10 @@ void MainWindow::loadFromFile(){
 
 
 void MainWindow::saveToFile(){
+
+    destColorImage.setTo(0);
+    destGrayImage.setTo(0);
+
     disconnect(&timer,SIGNAL(timeout()),this,SLOT(compute()));
 
     QString file = QFileDialog::getSaveFileName(this, "Save file");
@@ -144,42 +149,39 @@ void MainWindow::saveToFile(){
     connect(&timer,SIGNAL(timeout()),this,SLOT(compute()));
 }
 
-//Copia en destColorImage los canales de las casillas activas. Si no está activa, se considera 0
-//imagen2=CV_RGB(1,0,0); //inicializar imagen a un color
+
 void MainWindow::copyChannels(){
+
+    destColorImage.setTo(0);
+    destGrayImage.setTo(0);
 
     disconnect(&timer,SIGNAL(timeout()),this,SLOT(compute()));
 
-    std::vector<Mat> channels;
-    split(colorImage, channels);
-
-    Mat zero = Mat::zeros(colorImage.size(), CV_8UC3);
-
-    if(ui->rCheck->isChecked()){
-    std::vector<Mat> imageDest = { channels[0], zero, zero };
-    }
-
-    if(ui->gCheck->isChecked()){
-    std::vector<Mat> imageDest = { zero, channels[1], zero };
-    }
-
-    if(ui->bCheck->isChecked()){
-    std::vector<Mat> imageDest = { zero, zero, channels[2] };
-    }
 
 
+    std::vector<Mat> canales;
+    split(colorImage, canales);
 
-    Mat rdst, gdst, bdst;
+    if(!ui->rCheck->isChecked())
+        canales[0].setTo(0);
 
-    //merge(, destColorImage);
+    if(!ui->gCheck->isChecked())
+        canales[1].setTo(0);
 
-    imshow("Channel", destColorImage);
+    if(!ui->bCheck->isChecked())
+        canales[2].setTo(0);
 
+    merge(canales, destColorImage);
+
+   // imshow("Channel", destColorImage);
 
     connect(&timer,SIGNAL(timeout()),this,SLOT(compute()));
 }
 
+
 void MainWindow::copyWindow(){
+    destColorImage.setTo(0);
+    destGrayImage.setTo(0);
 
     disconnect(&timer,SIGNAL(timeout()),this,SLOT(compute()));
 
@@ -202,6 +204,8 @@ void MainWindow::copyWindow(){
 
 
 void MainWindow::resizeWin(){
+    destColorImage.setTo(0);
+    destGrayImage.setTo(0);
 
     disconnect(&timer,SIGNAL(timeout()),this,SLOT(compute()));
 
@@ -230,12 +234,28 @@ void MainWindow::resizeWin(){
 
 void MainWindow::enlargeWin(){
 
+    destColorImage.setTo(0);
+    destGrayImage.setTo(0);
+
     disconnect(&timer,SIGNAL(timeout()),this,SLOT(compute()));
 
-    double fv = 240/imageWindow.height;
-    double fh = 320/imageWindow.width;
+    double fh = 240./imageWindow.height;
+    double fv = 320./imageWindow.width;
 
-    Rect destImageWindow;//(fh,fv,imageWindow.width,imageWindow.height);
+    double menor;
+    if(fh<fv){
+        menor=fh;
+    }else{
+        menor=fv;
+    }
+
+    int W = rint(imageWindow.width*menor);
+    int H = rint(imageWindow.height*menor);
+
+    double y = (240-H)/2;
+    double x = (320-W)/2;
+
+    Rect destImageWindow(x,y,W,H);
 
     Mat winColor = colorImage(imageWindow);
     Mat winGray = grayImage(imageWindow);
@@ -243,26 +263,24 @@ void MainWindow::enlargeWin(){
     Mat winDestColor = destColorImage(destImageWindow);
     Mat winDestGray = destGrayImage(destImageWindow);
 
-    double menor;
-    if(fv<fh){
-       menor=fv;
-    }else{
-       menor=fh;
-    }
 
-    cv::resize(winColor, winDestColor, Size(),menor,menor,INTER_LINEAR);
-    cv::resize(winGray, winDestGray, Size(),menor,menor,INTER_LINEAR);
+    cv::resize(winColor, winColor, Size(),menor,menor,INTER_LINEAR);
+    cv::resize(winGray, winGray, Size(),menor,menor,INTER_LINEAR);
 
-    //winColor.copyTo(winDestColor);
-    //winGray.copyTo(winDestGray);
-
-    winDestColor.copyTo(destColorImage);
-    winDestGray.copyTo(destGrayImage);
-
-    //imshow("Color",destColorImage);
-    //imshow("Gray",destGrayImage);
+    winColor.copyTo(winDestColor);
+    winGray.copyTo(winDestGray);
 
     connect(&timer,SIGNAL(timeout()),this,SLOT(compute()));
+}
+
+
+void MainWindow::pixelValue(){
+//mat -> colorImage
+//       grayImage
+//img.at<char (si es de grises) o vector de 3 posiciones si es RGB>
+   //tooltip
+    colorImage.at<Vec3b>(f,c);
+    grayImage.at<char>(f,c);
 }
 
 

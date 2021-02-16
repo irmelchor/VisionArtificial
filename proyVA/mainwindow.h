@@ -55,6 +55,7 @@ public slots:
     void copyWindow();
     void resizeWin();
     void enlargeWin();
+    void pixelValue();
 
     /********************/
     void selectWindow(QPointF p, int w, int h);

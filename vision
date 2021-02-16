@@ -56,3 +56,58 @@ Enlarge
         menor=fh;
 
     cv::resize(loadImg, loadImg, Size(320, 240));
+    
+    
+    
+    
+    
+    
+    
+    -----------------------------------------------
+    
+    void MainWindow::enlargeWin(){
+
+    disconnect(&timer,SIGNAL(timeout()),this,SLOT(compute()));
+
+    double fv = 240/imageWindow.height;
+    double fh = 320/imageWindow.width;
+
+    double menor;
+    if(fv<fh){
+       menor=fv;
+    }else{
+       menor=fh;
+    }
+
+    Rect destImageWindow;//(fh,fv,imageWindow.width,imageWindow.height);
+
+    Mat winColor = colorImage(imageWindow);
+    Mat winGray = grayImage(imageWindow);
+
+    Mat winDestColor = destColorImage(destImageWindow);
+    Mat winDestGray = destGrayImage(destImageWindow);
+
+
+    cv::resize(winColor, winDestColor, Size(),menor,menor,INTER_LINEAR);
+    cv::resize(winGray, winDestGray, Size(),menor,menor,INTER_LINEAR);
+
+    //winColor.copyTo(winDestColor);
+    //winGray.copyTo(winDestGray);
+
+     winDestColor.copyTo(destColorImage);
+     winDestGray.copyTo(destGrayImage);
+
+    //imshow("Color",destColorImage);
+    //imshow("Gray",destGrayImage);
+
+    connect(&timer,SIGNAL(timeout()),this,SLOT(compute()));
+}
+    
+    
+    
+    
+    
+    
+    
+    
+    
