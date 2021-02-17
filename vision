@@ -1,3 +1,5 @@
+pilar.bachiller@gmail.com
+
 Para cambiar de RGB->BGR
 función: (cvtColor)
 
@@ -104,7 +106,10 @@ Enlarge
 }
     
     
-    
+Texto emergente
+
+posicion del pixel + posicion del frame + posicion widget principal
+ parametro		 ui->frame.pos()	this.pos();    
     
     
     

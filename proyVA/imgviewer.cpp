@@ -506,7 +506,7 @@ void ImgViewer::mouseReleaseEvent ( QMouseEvent *e )
                 if(iniCoorSelected!=endCoorSelected)
                     emit mouseSelection((iniCoorSelected+endCoorSelected)/2, abs(endCoorSelected.x()-iniCoorSelected.x()),abs(endCoorSelected.y()-iniCoorSelected.y()));
                 else
-                    emit mouseClick();
+                    emit mouseClick(iniCoorSelected);
         }
         onSelection = false;
 }

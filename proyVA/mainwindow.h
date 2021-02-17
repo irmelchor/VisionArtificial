@@ -14,6 +14,9 @@
 
 #include <QFileDialog>
 #include <QPixmap>
+#include <QToolTip>
+#include <QPoint>
+#include <QString>
 
 
 using namespace cv;
@@ -55,11 +58,11 @@ public slots:
     void copyWindow();
     void resizeWin();
     void enlargeWin();
-    void pixelValue();
+    void pixelValue(QPointF p);
 
     /********************/
     void selectWindow(QPointF p, int w, int h);
-    void deselectWindow();
+    void deselectWindow(QPointF p);
 
 };
 

@@ -115,7 +115,7 @@ protected:
 
 signals:
     void mouseSelection(QPointF center, int sizeX, int sizeY);
-    void mouseClick();
+    void mouseClick(QPointF p);
 protected:
 	void mousePressEvent(QMouseEvent *);
 	void mouseMoveEvent(QMouseEvent *);

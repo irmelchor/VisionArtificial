@@ -32,13 +32,12 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->copyWindowButton,SIGNAL(clicked(bool)),this,SLOT(copyWindow(void)));
     connect(ui->enlargeButton,SIGNAL(clicked(bool)),this,SLOT(enlargeWin(void)));
     connect(ui->resizeButton,SIGNAL(clicked(bool)),this,SLOT(resizeWin(void)));
-    connect(visorS,SIGNAL(mouseClick()),this,SLOT(pixelValue()));
-
+    connect(visorS,SIGNAL(mouseClick(QPointF)),this,SLOT(pixelValue(QPointF)));
 
     /********************/
 
     connect(visorS,SIGNAL(mouseSelection(QPointF, int, int)),this,SLOT(selectWindow(QPointF, int, int)));
-    connect(visorS,SIGNAL(mouseClick()),this,SLOT(deselectWindow()));
+    connect(visorS,SIGNAL(mouseClick(QPointF)),this,SLOT(deselectWindow(QPointF)));
     timer.start(30);
 }
 
@@ -274,13 +273,32 @@ void MainWindow::enlargeWin(){
 }
 
 
-void MainWindow::pixelValue(){
+void MainWindow::pixelValue(QPointF p){
 //mat -> colorImage
 //       grayImage
 //img.at<char (si es de grises) o vector de 3 posiciones si es RGB>
    //tooltip
-    colorImage.at<Vec3b>(f,c);
-    grayImage.at<char>(f,c);
+    //    colorImage.at<Vec3b>(f,c);
+    //grayImage.at<uchar>(f,c); //unsigned char
+
+   Point posicion(p.x(),p.y());
+   QPoint qposicion(p.x(),p.y());
+
+   QPoint suma = qposicion+this->pos()+ui->imageFrameS->pos();
+
+   Vec3b vcolor = colorImage.at<Vec3b>(posicion);
+   uchar vgris = grayImage.at<uchar>(posicion);
+
+
+   if(colorSelected){
+   QString colorConcatenado = "R= "+QString::number(vcolor[0])+" G= "+QString::number(vcolor[1])+ " B= "+QString::number(vcolor[2]);
+   QToolTip::showText(suma, colorConcatenado);
+
+   }else{
+   QString gris = "Gray= "+QString::number(vgris);
+   QToolTip::showText(suma, gris);
+   }
+
 }
 
 
@@ -308,8 +326,9 @@ void MainWindow::selectWindow(QPointF p, int w, int h)
     }
 }
 
-void MainWindow::deselectWindow()
+void MainWindow::deselectWindow(QPointF p)
 {
+    std::ignore = p;
     winSelected = false;
 }
 
