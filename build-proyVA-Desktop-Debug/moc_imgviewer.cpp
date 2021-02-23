@@ -6,7 +6,7 @@
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
 
-#include "../proyVA/imgviewer.h"
+#include "../Practica2/proyVA2/imgviewer.h"
 #include <QtCore/qbytearray.h>
 #include <QtCore/qmetatype.h>
 #if !defined(Q_MOC_OUTPUT_REVISION)
@@ -22,7 +22,7 @@ QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_ImgViewer_t {
     QByteArrayData data[8];
-    char stringdata0[58];
+    char stringdata0[57];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -37,12 +37,12 @@ QT_MOC_LITERAL(2, 25, 0), // ""
 QT_MOC_LITERAL(3, 26, 6), // "center"
 QT_MOC_LITERAL(4, 33, 5), // "sizeX"
 QT_MOC_LITERAL(5, 39, 5), // "sizeY"
-QT_MOC_LITERAL(6, 45, 10), // "mouseClick"
-QT_MOC_LITERAL(7, 56, 1) // "p"
+QT_MOC_LITERAL(6, 45, 9), // "mouseClic"
+QT_MOC_LITERAL(7, 55, 1) // "p"
 
     },
     "ImgViewer\0mouseSelection\0\0center\0sizeX\0"
-    "sizeY\0mouseClick\0p"
+    "sizeY\0mouseClic\0p"
 };
 #undef QT_MOC_LITERAL
 
@@ -77,7 +77,7 @@ void ImgViewer::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, v
         Q_UNUSED(_t)
         switch (_id) {
         case 0: _t->mouseSelection((*reinterpret_cast< QPointF(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2])),(*reinterpret_cast< int(*)>(_a[3]))); break;
-        case 1: _t->mouseClick((*reinterpret_cast< QPointF(*)>(_a[1]))); break;
+        case 1: _t->mouseClic((*reinterpret_cast< QPointF(*)>(_a[1]))); break;
         default: ;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
@@ -91,7 +91,7 @@ void ImgViewer::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, v
         }
         {
             using _t = void (ImgViewer::*)(QPointF );
-            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&ImgViewer::mouseClick)) {
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&ImgViewer::mouseClic)) {
                 *result = 1;
                 return;
             }
@@ -147,7 +147,7 @@ void ImgViewer::mouseSelection(QPointF _t1, int _t2, int _t3)
 }
 
 // SIGNAL 1
-void ImgViewer::mouseClick(QPointF _t1)
+void ImgViewer::mouseClic(QPointF _t1)
 {
     void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
     QMetaObject::activate(this, &staticMetaObject, 1, _a);
