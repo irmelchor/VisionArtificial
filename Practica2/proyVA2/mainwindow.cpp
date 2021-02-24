@@ -32,7 +32,6 @@ MainWindow::MainWindow(QWidget *parent) :
     /******************/
     connect(ui->loadButton,SIGNAL(clicked(bool)),this,SLOT(loadFromFile(void)));
     connect(ui->saveButton,SIGNAL(clicked(bool)),this,SLOT(saveToFile(void)));
-
     /*****************/
 
     connect(visorS,SIGNAL(mouseSelection(QPointF,int,int)),this,SLOT(selectWindow(QPointF, int, int)));
@@ -80,6 +79,14 @@ void MainWindow::compute()
 
 
     //Procesamiento
+    std::string str = "Transform Pixel";
+    QString qstr = QString::fromStdString(str);
+    if(ui->operationComboBox->currentText(qstr));
+
+        pixelTransformation();
+
+   // if(ui->operationComboBox->)
+   //     thresholding();
 
 
     //Actualización de los visores
@@ -198,11 +205,15 @@ void MainWindow::saveToFile(){
 
 
 void MainWindow::pixelTransformation(){
+//s = (L-1) - r //s=c∗log(1+ r̄ )
+    std::vector<char> vectorSalida[255];
 
 }
 
 //Umbralización
 void MainWindow::thresholding(){
+
+  threshold(grayImage, destGrayImage, 1, 128, THRESH_BINARY);
 
 }
 void MainWindow::histogramEqualization(){
