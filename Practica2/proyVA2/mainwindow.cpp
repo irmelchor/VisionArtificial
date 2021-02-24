@@ -80,14 +80,35 @@ void MainWindow::compute()
 
     //Procesamiento
 
-    //std::string str = "Transform Pixel";
-    //QString qstr = QString::fromStdString(str);
-    //if(ui->operationComboBox->currentText(qstr));
 
+    int metodo = ui->operationComboBox->currentIndex();
+
+    switch (metodo) {
+    case 0:
         pixelTransformation();
-
-   // if(ui->operationComboBox->)
-   //     thresholding();
+        break;
+    case 1:
+        thresholding();
+        break;
+    case 2:
+        histogramEqualization();
+        break;
+    case 3:
+        gaussianSmoothing();
+        break;
+    case 4:
+        mediumFilter();
+        break;
+    case 5:
+        linealFilter();
+        break;
+    case 6:
+        dilatation();
+        break;
+    case 7:
+        erosion();
+        break;
+    }
 
 
     //Actualización de los visores
@@ -233,25 +254,30 @@ void MainWindow::pixelTransformation(){
 
 //Umbralización
 void MainWindow::thresholding(){
-
-  threshold(grayImage, destGrayImage, 1, 128, THRESH_BINARY);
+  cv::threshold(grayImage, destGrayImage, ui->thresholdSpinBox->text().toInt(),255, THRESH_BINARY);
 
 }
+
 void MainWindow::histogramEqualization(){
-
+    cv::equalizeHist(grayImage,destGrayImage);
 }
+
 void MainWindow::gaussianSmoothing(){
-
+    //cv::GaussianBlur(grayImage,destGrayImage,):
 }
+
 void MainWindow::mediumFilter(){
 
 }
+
 void MainWindow::linealFilter(){
 
 }
+
 void MainWindow::dilatation(){
 
 }
+
 void MainWindow::erosion(){
 
 }
