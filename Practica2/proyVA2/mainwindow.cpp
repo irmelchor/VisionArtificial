@@ -79,9 +79,10 @@ void MainWindow::compute()
 
 
     //Procesamiento
-    std::string str = "Transform Pixel";
-    QString qstr = QString::fromStdString(str);
-    if(ui->operationComboBox->currentText(qstr));
+
+    //std::string str = "Transform Pixel";
+    //QString qstr = QString::fromStdString(str);
+    //if(ui->operationComboBox->currentText(qstr));
 
         pixelTransformation();
 
@@ -205,8 +206,28 @@ void MainWindow::saveToFile(){
 
 
 void MainWindow::pixelTransformation(){
-//s = (L-1) - r //s=c∗log(1+ r̄ )
-    std::vector<char> vectorSalida[255];
+    int r;
+    std::vector<uchar> lut;
+    lut.resize(256);
+
+    std::vector<int> vectorS;
+    vectorS.resize(4);
+    std::vector<int> vectorR;
+    vectorR.resize(4);
+
+    for(int i =0; i<4;i++){
+        vectorS[i] = pixelTDialog.grayTransformW->item(i,0)->text().toInt();
+        vectorR[i] = pixelTDialog.grayTransformW->item(i,1)->text().toInt();
+    }
+
+    for(int i = 0; i<vectorS.size()-1;i++){
+        for(int s=vectorS[i]; s<vectorS[i+1];s++){
+            r = (((s-vectorS[i])*(vectorR[i+1] - vectorR[i]))/(vectorS[i+1] - vectorS[i]))+vectorR[i];
+            lut[s]=r;
+        }
+    }
+
+    cv::LUT(grayImage,lut,destGrayImage);
 
 }
 
