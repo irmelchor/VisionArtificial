@@ -263,15 +263,23 @@ void MainWindow::histogramEqualization(){
 }
 
 void MainWindow::gaussianSmoothing(){
-    //cv::GaussianBlur(grayImage,destGrayImage,):
+    int w= ui->gaussWidthBox->text().toInt();
+    cv::GaussianBlur(grayImage,destGrayImage,Size(w,w),w/5.,w/5., BORDER_DEFAULT);
 }
 
 void MainWindow::mediumFilter(){
-
+    cv::medianBlur(grayImage,destGrayImage,3);
 }
 
 void MainWindow::linealFilter(){
-
+    Matx matrizKernel(3,3,f);
+    for(int i = 0; i<3; i++){
+        for(int j = 0; j<3; j++){
+            matrizKernel[i][j]=lFilterDialog.kernelWidget->item(i,j)->text().toInt();
+        }
+    }
+    double addedValue = LFilterDialog.addedVBox->text().toDouble();
+    cv::filter2D(grayImage,destGrayImage,-1,matrizKernel,Point(-1,-1),addedValue,BORDER_DEFAULT);
 }
 
 void MainWindow::dilatation(){
