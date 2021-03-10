@@ -26,13 +26,14 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->colorButton,SIGNAL(clicked(bool)),this,SLOT(change_color_gray(bool)));
 
     /********************/
-    connect(ui->loadButton,SIGNAL(clicked(bool)),this,SLOT(loadFromFile(void)));
+ /*   connect(ui->loadButton,SIGNAL(clicked(bool)),this,SLOT(loadFromFile(void)));
     connect(ui->saveButton,SIGNAL(clicked(bool)),this,SLOT(saveToFile(void)));
     connect(ui->copyChannelsButton,SIGNAL(clicked(bool)),this,SLOT(copyChannels(void)));
     connect(ui->copyWindowButton,SIGNAL(clicked(bool)),this,SLOT(copyWindow(void)));
     connect(ui->enlargeButton,SIGNAL(clicked(bool)),this,SLOT(enlargeWin(void)));
     connect(ui->resizeButton,SIGNAL(clicked(bool)),this,SLOT(resizeWin(void)));
     connect(visorS,SIGNAL(mouseClick(QPointF)),this,SLOT(pixelValue(QPointF)));
+    */
 
     /********************/
 
@@ -161,6 +162,7 @@ void MainWindow::copyChannels(){
     std::vector<Mat> canales;
     split(colorImage, canales);
 
+    /*
     if(!ui->rCheck->isChecked())
         canales[0].setTo(0);
 
@@ -169,6 +171,7 @@ void MainWindow::copyChannels(){
 
     if(!ui->bCheck->isChecked())
         canales[2].setTo(0);
+      */
 
     merge(canales, destColorImage);
 

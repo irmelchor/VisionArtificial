@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>860</width>
-    <height>390</height>
+    <height>314</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -83,155 +83,59 @@
     <bool>false</bool>
    </property>
   </widget>
-  <widget class="QPushButton" name="loadButton">
-   <property name="geometry">
-    <rect>
-     <x>730</x>
-     <y>100</y>
-     <width>111</width>
-     <height>31</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Load from File</string>
-   </property>
-   <property name="checkable">
-    <bool>false</bool>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="saveButton">
+  <widget class="QComboBox" name="comboBox">
    <property name="geometry">
     <rect>
      <x>730</x>
      <y>140</y>
      <width>111</width>
-     <height>31</height>
+     <height>25</height>
     </rect>
    </property>
-   <property name="text">
-    <string>Save to File</string>
+   <property name="editable">
+    <bool>true</bool>
    </property>
-   <property name="checkable">
-    <bool>false</bool>
+   <property name="maxVisibleItems">
+    <number>3</number>
    </property>
   </widget>
-  <widget class="QPushButton" name="copyChannelsButton">
+  <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>730</x>
-     <y>180</y>
-     <width>111</width>
-     <height>31</height>
+     <x>740</x>
+     <y>120</y>
+     <width>101</width>
+     <height>17</height>
     </rect>
    </property>
    <property name="text">
-    <string>Copy channels</string>
-   </property>
-   <property name="checkable">
-    <bool>false</bool>
+    <string>Select Object</string>
    </property>
   </widget>
-  <widget class="QFrame" name="frameCheck">
+  <widget class="QPushButton" name="pushButton">
    <property name="geometry">
     <rect>
      <x>720</x>
-     <y>220</y>
-     <width>121</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="frameShape">
-    <enum>QFrame::StyledPanel</enum>
-   </property>
-   <property name="frameShadow">
-    <enum>QFrame::Raised</enum>
-   </property>
-   <widget class="QCheckBox" name="rCheck">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>10</y>
-      <width>31</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>R</string>
-    </property>
-   </widget>
-   <widget class="QCheckBox" name="gCheck">
-    <property name="geometry">
-     <rect>
-      <x>50</x>
-      <y>10</y>
-      <width>31</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>G</string>
-    </property>
-   </widget>
-   <widget class="QCheckBox" name="bCheck">
-    <property name="geometry">
-     <rect>
-      <x>90</x>
-      <y>10</y>
-      <width>31</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>B</string>
-    </property>
-   </widget>
-  </widget>
-  <widget class="QPushButton" name="copyWindowButton">
-   <property name="geometry">
-    <rect>
-     <x>728</x>
-     <y>270</y>
-     <width>111</width>
+     <y>200</y>
+     <width>131</width>
      <height>31</height>
     </rect>
    </property>
    <property name="text">
-    <string>Copy window</string>
-   </property>
-   <property name="checkable">
-    <bool>false</bool>
+    <string>Add Object Image</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="resizeButton">
+  <widget class="QPushButton" name="pushButton_2">
    <property name="geometry">
     <rect>
-     <x>728</x>
-     <y>310</y>
-     <width>111</width>
+     <x>720</x>
+     <y>240</y>
+     <width>131</width>
      <height>31</height>
     </rect>
    </property>
    <property name="text">
-    <string>Resize window</string>
-   </property>
-   <property name="checkable">
-    <bool>false</bool>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="enlargeButton">
-   <property name="geometry">
-    <rect>
-     <x>728</x>
-     <y>350</y>
-     <width>111</width>
-     <height>31</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Enlarge window</string>
-   </property>
-   <property name="checkable">
-    <bool>false</bool>
+    <string>Del Object Image</string>
    </property>
   </widget>
  </widget>
