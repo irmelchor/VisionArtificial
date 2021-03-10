@@ -237,8 +237,8 @@ int OperOrderDialog::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     return _id;
 }
 struct qt_meta_stringdata_MainWindow_t {
-    QByteArrayData data[28];
-    char stringdata0[331];
+    QByteArrayData data[35];
+    char stringdata0[381];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -257,33 +257,41 @@ QT_MOC_LITERAL(6, 63, 5), // "color"
 QT_MOC_LITERAL(7, 69, 12), // "loadFromFile"
 QT_MOC_LITERAL(8, 82, 10), // "saveToFile"
 QT_MOC_LITERAL(9, 93, 19), // "pixelTransformation"
-QT_MOC_LITERAL(10, 113, 12), // "thresholding"
-QT_MOC_LITERAL(11, 126, 21), // "histogramEqualization"
-QT_MOC_LITERAL(12, 148, 17), // "gaussianSmoothing"
-QT_MOC_LITERAL(13, 166, 12), // "mediumFilter"
-QT_MOC_LITERAL(14, 179, 12), // "linealFilter"
-QT_MOC_LITERAL(15, 192, 10), // "dilatation"
-QT_MOC_LITERAL(16, 203, 7), // "erosion"
-QT_MOC_LITERAL(17, 211, 12), // "selectWindow"
-QT_MOC_LITERAL(18, 224, 1), // "p"
-QT_MOC_LITERAL(19, 226, 1), // "w"
-QT_MOC_LITERAL(20, 228, 1), // "h"
-QT_MOC_LITERAL(21, 230, 14), // "deselectWindow"
-QT_MOC_LITERAL(22, 245, 17), // "controlGrayRanges"
-QT_MOC_LITERAL(23, 263, 17), // "QTableWidgetItem*"
-QT_MOC_LITERAL(24, 281, 19), // "controlKernelRanges"
-QT_MOC_LITERAL(25, 301, 10), // "closeEvent"
-QT_MOC_LITERAL(26, 312, 12), // "QCloseEvent*"
-QT_MOC_LITERAL(27, 325, 5) // "event"
+QT_MOC_LITERAL(10, 113, 3), // "Mat"
+QT_MOC_LITERAL(11, 117, 3), // "src"
+QT_MOC_LITERAL(12, 121, 4), // "Mat&"
+QT_MOC_LITERAL(13, 126, 3), // "dst"
+QT_MOC_LITERAL(14, 130, 12), // "thresholding"
+QT_MOC_LITERAL(15, 143, 21), // "histogramEqualization"
+QT_MOC_LITERAL(16, 165, 17), // "gaussianSmoothing"
+QT_MOC_LITERAL(17, 183, 12), // "mediumFilter"
+QT_MOC_LITERAL(18, 196, 12), // "linealFilter"
+QT_MOC_LITERAL(19, 209, 10), // "dilatation"
+QT_MOC_LITERAL(20, 220, 7), // "erosion"
+QT_MOC_LITERAL(21, 228, 12), // "applySeveral"
+QT_MOC_LITERAL(22, 241, 12), // "metodoSwitch"
+QT_MOC_LITERAL(23, 254, 6), // "metodo"
+QT_MOC_LITERAL(24, 261, 12), // "selectWindow"
+QT_MOC_LITERAL(25, 274, 1), // "p"
+QT_MOC_LITERAL(26, 276, 1), // "w"
+QT_MOC_LITERAL(27, 278, 1), // "h"
+QT_MOC_LITERAL(28, 280, 14), // "deselectWindow"
+QT_MOC_LITERAL(29, 295, 17), // "controlGrayRanges"
+QT_MOC_LITERAL(30, 313, 17), // "QTableWidgetItem*"
+QT_MOC_LITERAL(31, 331, 19), // "controlKernelRanges"
+QT_MOC_LITERAL(32, 351, 10), // "closeEvent"
+QT_MOC_LITERAL(33, 362, 12), // "QCloseEvent*"
+QT_MOC_LITERAL(34, 375, 5) // "event"
 
     },
     "MainWindow\0compute\0\0start_stop_capture\0"
     "start\0change_color_gray\0color\0"
     "loadFromFile\0saveToFile\0pixelTransformation\0"
-    "thresholding\0histogramEqualization\0"
-    "gaussianSmoothing\0mediumFilter\0"
-    "linealFilter\0dilatation\0erosion\0"
-    "selectWindow\0p\0w\0h\0deselectWindow\0"
+    "Mat\0src\0Mat&\0dst\0thresholding\0"
+    "histogramEqualization\0gaussianSmoothing\0"
+    "mediumFilter\0linealFilter\0dilatation\0"
+    "erosion\0applySeveral\0metodoSwitch\0"
+    "metodo\0selectWindow\0p\0w\0h\0deselectWindow\0"
     "controlGrayRanges\0QTableWidgetItem*\0"
     "controlKernelRanges\0closeEvent\0"
     "QCloseEvent*\0event"
@@ -296,7 +304,7 @@ static const uint qt_meta_data_MainWindow[] = {
        8,       // revision
        0,       // classname
        0,    0, // classinfo
-      18,   14, // methods
+      20,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -304,24 +312,26 @@ static const uint qt_meta_data_MainWindow[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags
-       1,    0,  104,    2, 0x0a /* Public */,
-       3,    1,  105,    2, 0x0a /* Public */,
-       5,    1,  108,    2, 0x0a /* Public */,
-       7,    0,  111,    2, 0x0a /* Public */,
-       8,    0,  112,    2, 0x0a /* Public */,
-       9,    0,  113,    2, 0x0a /* Public */,
-      10,    0,  114,    2, 0x0a /* Public */,
-      11,    0,  115,    2, 0x0a /* Public */,
-      12,    0,  116,    2, 0x0a /* Public */,
-      13,    0,  117,    2, 0x0a /* Public */,
-      14,    0,  118,    2, 0x0a /* Public */,
-      15,    0,  119,    2, 0x0a /* Public */,
-      16,    0,  120,    2, 0x0a /* Public */,
-      17,    3,  121,    2, 0x0a /* Public */,
-      21,    1,  128,    2, 0x0a /* Public */,
-      22,    1,  131,    2, 0x0a /* Public */,
-      24,    1,  134,    2, 0x0a /* Public */,
-      25,    1,  137,    2, 0x0a /* Public */,
+       1,    0,  114,    2, 0x0a /* Public */,
+       3,    1,  115,    2, 0x0a /* Public */,
+       5,    1,  118,    2, 0x0a /* Public */,
+       7,    0,  121,    2, 0x0a /* Public */,
+       8,    0,  122,    2, 0x0a /* Public */,
+       9,    2,  123,    2, 0x0a /* Public */,
+      14,    2,  128,    2, 0x0a /* Public */,
+      15,    2,  133,    2, 0x0a /* Public */,
+      16,    2,  138,    2, 0x0a /* Public */,
+      17,    2,  143,    2, 0x0a /* Public */,
+      18,    2,  148,    2, 0x0a /* Public */,
+      19,    2,  153,    2, 0x0a /* Public */,
+      20,    2,  158,    2, 0x0a /* Public */,
+      21,    0,  163,    2, 0x0a /* Public */,
+      22,    2,  164,    2, 0x0a /* Public */,
+      24,    3,  169,    2, 0x0a /* Public */,
+      28,    1,  176,    2, 0x0a /* Public */,
+      29,    1,  179,    2, 0x0a /* Public */,
+      31,    1,  182,    2, 0x0a /* Public */,
+      32,    1,  185,    2, 0x0a /* Public */,
 
  // slots: parameters
     QMetaType::Void,
@@ -329,19 +339,21 @@ static const uint qt_meta_data_MainWindow[] = {
     QMetaType::Void, QMetaType::Bool,    6,
     QMetaType::Void,
     QMetaType::Void,
+    QMetaType::Void, 0x80000000 | 10, 0x80000000 | 12,   11,   13,
+    QMetaType::Void, 0x80000000 | 10, 0x80000000 | 12,   11,   13,
+    QMetaType::Void, 0x80000000 | 10, 0x80000000 | 12,   11,   13,
+    QMetaType::Void, 0x80000000 | 10, 0x80000000 | 12,   11,   13,
+    QMetaType::Void, 0x80000000 | 10, 0x80000000 | 12,   11,   13,
+    QMetaType::Void, 0x80000000 | 10, 0x80000000 | 12,   11,   13,
+    QMetaType::Void, 0x80000000 | 10, 0x80000000 | 12,   11,   13,
+    QMetaType::Void, 0x80000000 | 10, 0x80000000 | 12,   11,   13,
     QMetaType::Void,
-    QMetaType::Void,
-    QMetaType::Void,
-    QMetaType::Void,
-    QMetaType::Void,
-    QMetaType::Void,
-    QMetaType::Void,
-    QMetaType::Void,
-    QMetaType::Void, QMetaType::QPointF, QMetaType::Int, QMetaType::Int,   18,   19,   20,
+    0x80000000 | 10, QMetaType::Int, 0x80000000 | 10,   23,   11,
+    QMetaType::Void, QMetaType::QPointF, QMetaType::Int, QMetaType::Int,   25,   26,   27,
     QMetaType::Void, QMetaType::QPointF,    2,
-    QMetaType::Void, 0x80000000 | 23,    2,
-    QMetaType::Void, 0x80000000 | 23,    2,
-    QMetaType::Void, 0x80000000 | 26,   27,
+    QMetaType::Void, 0x80000000 | 30,    2,
+    QMetaType::Void, 0x80000000 | 30,    2,
+    QMetaType::Void, 0x80000000 | 33,   34,
 
        0        // eod
 };
@@ -357,19 +369,22 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 2: _t->change_color_gray((*reinterpret_cast< bool(*)>(_a[1]))); break;
         case 3: _t->loadFromFile(); break;
         case 4: _t->saveToFile(); break;
-        case 5: _t->pixelTransformation(); break;
-        case 6: _t->thresholding(); break;
-        case 7: _t->histogramEqualization(); break;
-        case 8: _t->gaussianSmoothing(); break;
-        case 9: _t->mediumFilter(); break;
-        case 10: _t->linealFilter(); break;
-        case 11: _t->dilatation(); break;
-        case 12: _t->erosion(); break;
-        case 13: _t->selectWindow((*reinterpret_cast< QPointF(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2])),(*reinterpret_cast< int(*)>(_a[3]))); break;
-        case 14: _t->deselectWindow((*reinterpret_cast< QPointF(*)>(_a[1]))); break;
-        case 15: _t->controlGrayRanges((*reinterpret_cast< QTableWidgetItem*(*)>(_a[1]))); break;
-        case 16: _t->controlKernelRanges((*reinterpret_cast< QTableWidgetItem*(*)>(_a[1]))); break;
-        case 17: _t->closeEvent((*reinterpret_cast< QCloseEvent*(*)>(_a[1]))); break;
+        case 5: _t->pixelTransformation((*reinterpret_cast< Mat(*)>(_a[1])),(*reinterpret_cast< Mat(*)>(_a[2]))); break;
+        case 6: _t->thresholding((*reinterpret_cast< Mat(*)>(_a[1])),(*reinterpret_cast< Mat(*)>(_a[2]))); break;
+        case 7: _t->histogramEqualization((*reinterpret_cast< Mat(*)>(_a[1])),(*reinterpret_cast< Mat(*)>(_a[2]))); break;
+        case 8: _t->gaussianSmoothing((*reinterpret_cast< Mat(*)>(_a[1])),(*reinterpret_cast< Mat(*)>(_a[2]))); break;
+        case 9: _t->mediumFilter((*reinterpret_cast< Mat(*)>(_a[1])),(*reinterpret_cast< Mat(*)>(_a[2]))); break;
+        case 10: _t->linealFilter((*reinterpret_cast< Mat(*)>(_a[1])),(*reinterpret_cast< Mat(*)>(_a[2]))); break;
+        case 11: _t->dilatation((*reinterpret_cast< Mat(*)>(_a[1])),(*reinterpret_cast< Mat(*)>(_a[2]))); break;
+        case 12: _t->erosion((*reinterpret_cast< Mat(*)>(_a[1])),(*reinterpret_cast< Mat(*)>(_a[2]))); break;
+        case 13: _t->applySeveral(); break;
+        case 14: { Mat _r = _t->metodoSwitch((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< Mat(*)>(_a[2])));
+            if (_a[0]) *reinterpret_cast< Mat*>(_a[0]) = std::move(_r); }  break;
+        case 15: _t->selectWindow((*reinterpret_cast< QPointF(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2])),(*reinterpret_cast< int(*)>(_a[3]))); break;
+        case 16: _t->deselectWindow((*reinterpret_cast< QPointF(*)>(_a[1]))); break;
+        case 17: _t->controlGrayRanges((*reinterpret_cast< QTableWidgetItem*(*)>(_a[1]))); break;
+        case 18: _t->controlKernelRanges((*reinterpret_cast< QTableWidgetItem*(*)>(_a[1]))); break;
+        case 19: _t->closeEvent((*reinterpret_cast< QCloseEvent*(*)>(_a[1]))); break;
         default: ;
         }
     }
@@ -404,13 +419,13 @@ int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 18)
+        if (_id < 20)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 18;
+        _id -= 20;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 18)
+        if (_id < 20)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 18;
+        _id -= 20;
     }
     return _id;
 }

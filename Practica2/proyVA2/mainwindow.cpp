@@ -85,28 +85,31 @@ void MainWindow::compute()
 
     switch (metodo) {
     case 0:
-        pixelTransformation();
+        pixelTransformation(grayImage,destGrayImage);
         break;
     case 1:
-        thresholding();
+        thresholding(grayImage,destGrayImage);
         break;
     case 2:
-        histogramEqualization();
+        histogramEqualization(grayImage,destGrayImage);
         break;
     case 3:
-        gaussianSmoothing();
+        gaussianSmoothing(grayImage,destGrayImage);
         break;
     case 4:
-        mediumFilter();
+        mediumFilter(grayImage,destGrayImage);
         break;
     case 5:
-        linealFilter();
+        linealFilter(grayImage,destGrayImage);
         break;
     case 6:
-        dilatation();
+        dilatation(grayImage,destGrayImage);
         break;
     case 7:
-        erosion();
+        erosion(grayImage,destGrayImage);
+        break;
+    case 8:
+        applySeveral();
         break;
     }
 
@@ -226,7 +229,7 @@ void MainWindow::saveToFile(){
 }
 
 
-void MainWindow::pixelTransformation(){
+void MainWindow::pixelTransformation(Mat src, Mat &dst){
     int r;
     std::vector<uchar> lut;
     lut.resize(256);
@@ -248,48 +251,125 @@ void MainWindow::pixelTransformation(){
         }
     }
 
-    cv::LUT(grayImage,lut,destGrayImage);
+    cv::LUT(src,lut,dst);
 
 }
 
 //Umbralización
-void MainWindow::thresholding(){
-  cv::threshold(grayImage, destGrayImage, ui->thresholdSpinBox->text().toInt(),255, THRESH_BINARY);
+void MainWindow::thresholding(Mat src, Mat &dst){
+  cv::threshold(src, dst, ui->thresholdSpinBox->text().toInt(),255, THRESH_BINARY);
 
 }
 
-void MainWindow::histogramEqualization(){
-    cv::equalizeHist(grayImage,destGrayImage);
+void MainWindow::histogramEqualization(Mat src, Mat &dst){
+    cv::equalizeHist(src,dst);
 }
 
-void MainWindow::gaussianSmoothing(){
+void MainWindow::gaussianSmoothing(Mat src, Mat &dst){
     int w= ui->gaussWidthBox->text().toInt();
-    cv::GaussianBlur(grayImage,destGrayImage,Size(w,w),w/5.,w/5., BORDER_DEFAULT);
+    cv::GaussianBlur(src,dst,Size(w,w),w/5.,w/5., BORDER_DEFAULT);
 }
 
-void MainWindow::mediumFilter(){
-    cv::medianBlur(grayImage,destGrayImage,3);
+void MainWindow::mediumFilter(Mat src, Mat &dst){
+    cv::medianBlur(src,dst,3);
 }
 
-void MainWindow::linealFilter(){
-    Matx matrizKernel(3,3,f);
+void MainWindow::linealFilter(Mat src, Mat &dst){
+    Matx33f matrizKernel;
     for(int i = 0; i<3; i++){
         for(int j = 0; j<3; j++){
-            matrizKernel[i][j]=lFilterDialog.kernelWidget->item(i,j)->text().toInt();
+            matrizKernel(i,j)=lFilterDialog.kernelWidget->item(i,j)->text().toFloat();
         }
     }
-    double addedValue = LFilterDialog.addedVBox->text().toDouble();
-    cv::filter2D(grayImage,destGrayImage,-1,matrizKernel,Point(-1,-1),addedValue,BORDER_DEFAULT);
+    double addedValue = lFilterDialog.addedVBox->text().toDouble();
+    cv::filter2D(src,dst,-1,matrizKernel,Point(-1,-1),addedValue,BORDER_DEFAULT);
 }
 
-void MainWindow::dilatation(){
+void MainWindow::dilatation(Mat src, Mat &dst){
+    Mat auxImage;
+    cv::threshold(src, auxImage, ui->thresholdSpinBox->text().toInt(),255, THRESH_BINARY);
+    cv::dilate(auxImage,dst,Mat(),Point(-1,-1),1,BORDER_CONSTANT,morphologyDefaultBorderValue());
+}
+
+void MainWindow::erosion(Mat src, Mat &dst){
+    Mat auxImage;
+    cv::threshold(src, auxImage, ui->thresholdSpinBox->text().toInt(),255, THRESH_BINARY);
+    cv::erode(auxImage,dst,Mat(),Point(-1,-1),1,BORDER_CONSTANT,morphologyDefaultBorderValue());
+}
+
+void MainWindow::applySeveral(){
+    destGrayImage.setTo(0);
+
+    if(operOrderDialog.firstOperCheckBox->isChecked()){
+        int metodo = operOrderDialog.operationComboBox1->currentIndex();
+        Mat aux = metodoSwitch(metodo, grayImage);
+
+        if(operOrderDialog.secondOperCheckBox->isChecked()){
+            int metodo = operOrderDialog.operationComboBox2->currentIndex();
+            Mat aux2 = metodoSwitch(metodo, aux);
+
+            if(operOrderDialog.thirdOperCheckBox->isChecked()){
+                int metodo = operOrderDialog.operationComboBox3->currentIndex();
+                Mat aux3 = metodoSwitch(metodo, aux2);
+
+                if(operOrderDialog.fourthOperCheckBox->isChecked()){
+                    int metodo = operOrderDialog.operationComboBox4->currentIndex();
+                    Mat aux4 = metodoSwitch(metodo,aux3);
+                    //Copiar aux4 en destGrayImage
+                    aux4.copyTo(destGrayImage);
+
+                } else{
+                    //Copiar aux3 en destGrayImage
+                    aux3.copyTo(destGrayImage);
+                }
+
+            } else{
+                //Copiar aux2 en destGrayImage
+                aux2.copyTo(destGrayImage);
+            }
+
+        } else{
+            //Copiar aux en destGrayImage
+            aux.copyTo(destGrayImage);
+        }
+
+    } else{
+        grayImage.copyTo(destGrayImage);
+    }
 
 }
 
-void MainWindow::erosion(){
 
+Mat MainWindow::metodoSwitch(int metodo, Mat src){
+    Mat aux;
+    switch (metodo) {
+    case 0:
+        pixelTransformation(src,aux);
+        break;
+    case 1:
+        thresholding(src,aux);
+        break;
+    case 2:
+        histogramEqualization(src,aux);
+        break;
+    case 3:
+        gaussianSmoothing(src,aux);
+        break;
+    case 4:
+        mediumFilter(src,aux);
+        break;
+    case 5:
+        linealFilter(src,aux);
+        break;
+    case 6:
+        dilatation(src,aux);
+        break;
+    case 7:
+        erosion(src,aux);
+        break;
+    }
+return aux;
 }
-
 
 /***************************/
 

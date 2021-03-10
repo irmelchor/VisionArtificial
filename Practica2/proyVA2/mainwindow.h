@@ -94,14 +94,16 @@ public slots:
     /**************/
     void loadFromFile();
     void saveToFile();
-    void pixelTransformation();
-    void thresholding(); //Umbralización
-    void histogramEqualization();
-    void gaussianSmoothing();
-    void mediumFilter();
-    void linealFilter();
-    void dilatation();
-    void erosion();
+    void pixelTransformation(Mat src, Mat &dst);
+    void thresholding(Mat src, Mat &dst); //Umbralización
+    void histogramEqualization(Mat src, Mat &dst);
+    void gaussianSmoothing(Mat src, Mat &dst);
+    void mediumFilter(Mat src, Mat &dst);
+    void linealFilter(Mat src, Mat &dst);
+    void dilatation(Mat src, Mat &dst);
+    void erosion(Mat src, Mat &dst);
+    void applySeveral();
+    Mat metodoSwitch(int metodo, Mat src);
 
     /**************/
 
