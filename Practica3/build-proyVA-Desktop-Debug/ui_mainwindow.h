@@ -28,8 +28,8 @@ public:
     QPushButton *colorButton;
     QComboBox *comboBox;
     QLabel *label;
-    QPushButton *pushButton;
-    QPushButton *pushButton_2;
+    QPushButton *addObject;
+    QPushButton *delObject;
 
     void setupUi(QWidget *MainWindow)
     {
@@ -57,19 +57,23 @@ public:
         colorButton->setCheckable(true);
         colorButton->setChecked(false);
         comboBox = new QComboBox(MainWindow);
+        comboBox->addItem(QString());
+        comboBox->addItem(QString());
+        comboBox->addItem(QString());
         comboBox->setObjectName(QString::fromUtf8("comboBox"));
         comboBox->setGeometry(QRect(730, 140, 111, 25));
         comboBox->setEditable(true);
         comboBox->setMaxVisibleItems(3);
+        comboBox->setInsertPolicy(QComboBox::NoInsert);
         label = new QLabel(MainWindow);
         label->setObjectName(QString::fromUtf8("label"));
         label->setGeometry(QRect(740, 120, 101, 17));
-        pushButton = new QPushButton(MainWindow);
-        pushButton->setObjectName(QString::fromUtf8("pushButton"));
-        pushButton->setGeometry(QRect(720, 200, 131, 31));
-        pushButton_2 = new QPushButton(MainWindow);
-        pushButton_2->setObjectName(QString::fromUtf8("pushButton_2"));
-        pushButton_2->setGeometry(QRect(720, 240, 131, 31));
+        addObject = new QPushButton(MainWindow);
+        addObject->setObjectName(QString::fromUtf8("addObject"));
+        addObject->setGeometry(QRect(720, 200, 131, 31));
+        delObject = new QPushButton(MainWindow);
+        delObject->setObjectName(QString::fromUtf8("delObject"));
+        delObject->setGeometry(QRect(720, 240, 131, 31));
 
         retranslateUi(MainWindow);
 
@@ -81,9 +85,13 @@ public:
         MainWindow->setWindowTitle(QApplication::translate("MainWindow", "Proyecto de Visi\303\263n Artificial", nullptr));
         captureButton->setText(QApplication::translate("MainWindow", "Stop Capture", nullptr));
         colorButton->setText(QApplication::translate("MainWindow", "Color Image", nullptr));
+        comboBox->setItemText(0, QApplication::translate("MainWindow", "Object1", nullptr));
+        comboBox->setItemText(1, QApplication::translate("MainWindow", "Object2", nullptr));
+        comboBox->setItemText(2, QApplication::translate("MainWindow", "Object3", nullptr));
+
         label->setText(QApplication::translate("MainWindow", "Select Object", nullptr));
-        pushButton->setText(QApplication::translate("MainWindow", "Add Object Image", nullptr));
-        pushButton_2->setText(QApplication::translate("MainWindow", "Del Object Image", nullptr));
+        addObject->setText(QApplication::translate("MainWindow", "Add Object Image", nullptr));
+        delObject->setText(QApplication::translate("MainWindow", "Del Object Image", nullptr));
     } // retranslateUi
 
 };

@@ -11,6 +11,16 @@ MainWindow::MainWindow(QWidget *parent) :
     winSelected = false;
     colorSelected = false;
 
+    detector = ORB::create();
+    matcher = BFMatcher::create();
+    objectWins.resize(numObjetos);
+    objectKP.resize(numObjetos);
+    objectDesc.resize(numObjetos);
+    escalas.resize(numEscalas);
+    escalas[0] = 1.25;
+    escalas[1] = 1.;
+    escalas[2] = 0.75;
+
     colorImage.create(240,320,CV_8UC3);
     grayImage.create(240,320,CV_8UC1);
     destColorImage.create(240,320,CV_8UC3);
@@ -34,6 +44,9 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->resizeButton,SIGNAL(clicked(bool)),this,SLOT(resizeWin(void)));
     connect(visorS,SIGNAL(mouseClick(QPointF)),this,SLOT(pixelValue(QPointF)));
     */
+    connect(ui->addObject,SIGNAL(clicked()),this,SLOT(addObj()));
+    connect(ui->delObject,SIGNAL(clicked()),this,SLOT(delObj()));
+
 
     /********************/
 
@@ -302,6 +315,49 @@ void MainWindow::pixelValue(QPointF p){
    QToolTip::showText(suma, gris);
    }
 
+}
+
+
+void MainWindow::actualizarColeccion(){
+    matcher->clear();
+    for(int i = 0; i<numObjetos; i++){
+        matcher->add(objectDesc[i]);
+    }
+
+}
+
+void MainWindow::addObj(){
+
+    std::vector<KeyPoint> kp;
+    Mat image;
+    Mat desc;
+
+    grayImage(imageWindow).copyTo(objectWins[ui->comboBox->currentIndex()]);
+
+    objectKP[ui->comboBox->currentIndex()].resize(3);
+    objectDesc[ui->comboBox->currentIndex()].resize(3);
+    for(int i = 0; i<numObjetos; i++){
+       //redimensionar imagen
+       cv::resize(objectWins[ui->comboBox->currentIndex()],image,Size(),escalas[i], escalas[i], INTER_LINEAR);
+       detector->detectAndCompute(image, cv::noArray(),kp,desc, false);
+       objectKP[ui->comboBox->currentIndex()][i] = kp;
+       objectDesc[ui->comboBox->currentIndex()][i] = desc;
+
+       actualizarColeccion();
+
+
+
+    }
+      //Mostrar
+    //crear slot generico para ir mostrando la que elijamos
+}
+
+
+void MainWindow::delObj(){
+    objectWins[ui->comboBox->currentIndex()] = Mat();
+    objectKP.clear();
+    objectDesc.clear();
+    actualizarColeccion();
 }
 
 

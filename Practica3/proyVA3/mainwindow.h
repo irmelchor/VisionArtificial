@@ -45,6 +45,17 @@ private:
     Rect imageWindow;
     bool colorSelected;
 
+    const int numObjetos = 3;
+    const int numEscalas = 3;
+    typedef std::vector<KeyPoint> kplist;
+    Ptr<ORB> detector;
+    Ptr<BFMatcher> matcher;
+    std::vector<std::vector<kplist>> objectKP;
+    std::vector<std::vector<Mat>> objectDesc;
+    std::vector<Mat> objectWins;
+    std::vector<int> colect2Object;
+    std::vector<float> escalas;
+
 
 public slots:
     void compute();
@@ -59,6 +70,10 @@ public slots:
     void resizeWin();
     void enlargeWin();
     void pixelValue(QPointF p);
+
+    void actualizarColeccion();
+    void addObj();
+    void delObj();
 
     /********************/
     void selectWindow(QPointF p, int w, int h);

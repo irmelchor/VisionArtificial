@@ -98,6 +98,24 @@
    <property name="maxVisibleItems">
     <number>3</number>
    </property>
+   <property name="insertPolicy">
+    <enum>QComboBox::NoInsert</enum>
+   </property>
+   <item>
+    <property name="text">
+     <string>Object1</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Object2</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Object3</string>
+    </property>
+   </item>
   </widget>
   <widget class="QLabel" name="label">
    <property name="geometry">
@@ -112,7 +130,7 @@
     <string>Select Object</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton">
+  <widget class="QPushButton" name="addObject">
    <property name="geometry">
     <rect>
      <x>720</x>
@@ -125,7 +143,7 @@
     <string>Add Object Image</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton_2">
+  <widget class="QPushButton" name="delObject">
    <property name="geometry">
     <rect>
      <x>720</x>
