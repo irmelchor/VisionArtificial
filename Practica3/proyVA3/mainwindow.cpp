@@ -46,6 +46,7 @@ MainWindow::MainWindow(QWidget *parent) :
     */
     connect(ui->addObject,SIGNAL(clicked()),this,SLOT(addObj()));
     connect(ui->delObject,SIGNAL(clicked()),this,SLOT(delObj()));
+    connect(ui->comboBox, SIGNAL(currentIndexChanged(int)),this,SLOT(mostrar(int)));
 
 
     /********************/
@@ -321,8 +322,41 @@ void MainWindow::pixelValue(QPointF p){
 void MainWindow::actualizarColeccion(){
     matcher->clear();
     for(int i = 0; i<numObjetos; i++){
-        matcher->add(objectDesc[i]);
+        if(!objectDesc[i].empty())
+            matcher->add(objectDesc[i]);
     }
+    qDebug("Actualizamos coleccion");
+
+}
+
+void MainWindow::mostrar(int indice){
+
+    //Mostrar
+  // connect con un slot
+  //crear slot generico para ir mostrando la que elijamos
+ // si hay imagen? empty
+ //  objectWins[i].rows->h
+ //  objectWins[i].cols->w
+ //  objectWins[i].copyTo(destGrayImage(win->Rect));
+
+  destGrayImage.setTo(0);
+
+  if(!objectWins[indice].empty()){
+      qDebug("Entramos porque no está vacio");
+      double fv = (240-objectWins[indice].rows)/2;
+      double fh = (320-objectWins[indice].cols)/2;
+
+      Rect destImageWindow(fh,fv,objectWins[indice].cols,objectWins[indice].rows);
+
+
+      objectWins[indice].copyTo(destGrayImage(destImageWindow));
+
+  }
+  else{
+      qDebug("Entramos porque SI está vacio");
+      destColorImage.setTo(0);
+      destGrayImage.setTo(0);
+  }
 
 }
 
@@ -331,32 +365,50 @@ void MainWindow::addObj(){
     std::vector<KeyPoint> kp;
     Mat image;
     Mat desc;
+    bool salir=false;
 
     grayImage(imageWindow).copyTo(objectWins[ui->comboBox->currentIndex()]);
 
     objectKP[ui->comboBox->currentIndex()].resize(3);
     objectDesc[ui->comboBox->currentIndex()].resize(3);
-    for(int i = 0; i<numObjetos; i++){
+    for(int i = 0; i<numEscalas && !salir; i++){
        //redimensionar imagen
        cv::resize(objectWins[ui->comboBox->currentIndex()],image,Size(),escalas[i], escalas[i], INTER_LINEAR);
        detector->detectAndCompute(image, cv::noArray(),kp,desc, false);
-       objectKP[ui->comboBox->currentIndex()][i] = kp;
-       objectDesc[ui->comboBox->currentIndex()][i] = desc;
 
-       actualizarColeccion();
-
+       if(kp.size()>=10){
+           objectKP[ui->comboBox->currentIndex()][i] = kp;
+           objectDesc[ui->comboBox->currentIndex()][i] = desc;
+       }
+       else{
+           //salir del bucle
+           salir=true;
+       }
 
 
     }
-      //Mostrar
-    //crear slot generico para ir mostrando la que elijamos
+
+    //si no hay alguno de los objetos de la colección, llamamos a del, si no
+    if(objectKP[ui->comboBox->currentIndex()].empty()){
+        qDebug("Borramos");
+        delObj(ui->comboBox->currentIndex());
+    }
+    else{
+        qDebug("Hay objetos en la coleccion, estamos en addobj");
+        actualizarColeccion();
+        mostrar(ui->comboBox->currentIndex());
+    }
+    /*********************/
 }
 
 
-void MainWindow::delObj(){
-    objectWins[ui->comboBox->currentIndex()] = Mat();
-    objectKP.clear();
-    objectDesc.clear();
+void MainWindow::delObj(int indice){
+    qDebug("Entramos en DELOBJ");
+    objectWins[indice] = Mat();
+    objectKP[indice].clear();
+    qDebug("Borramos kp");
+    objectDesc[indice].clear();
+    qDebug("Borramos desc");
     actualizarColeccion();
 }
 

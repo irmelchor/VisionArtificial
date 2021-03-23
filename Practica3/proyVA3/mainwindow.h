@@ -73,7 +73,8 @@ public slots:
 
     void actualizarColeccion();
     void addObj();
-    void delObj();
+    void delObj(int indice);
+    void mostrar(int indice);
 
     /********************/
     void selectWindow(QPointF p, int w, int h);

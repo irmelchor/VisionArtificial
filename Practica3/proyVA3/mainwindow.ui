@@ -99,7 +99,7 @@
     <number>3</number>
    </property>
    <property name="insertPolicy">
-    <enum>QComboBox::NoInsert</enum>
+    <enum>QComboBox::InsertAtCurrent</enum>
    </property>
    <item>
     <property name="text">

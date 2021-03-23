@@ -64,7 +64,7 @@ public:
         comboBox->setGeometry(QRect(730, 140, 111, 25));
         comboBox->setEditable(true);
         comboBox->setMaxVisibleItems(3);
-        comboBox->setInsertPolicy(QComboBox::NoInsert);
+        comboBox->setInsertPolicy(QComboBox::InsertAtCurrent);
         label = new QLabel(MainWindow);
         label->setObjectName(QString::fromUtf8("label"));
         label->setGeometry(QRect(740, 120, 101, 17));
