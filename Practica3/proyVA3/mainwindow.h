@@ -55,6 +55,10 @@ private:
     std::vector<Mat> objectWins;
     std::vector<int> colect2Object;
     std::vector<float> escalas;
+    std::vector<std::vector<DMatch>> matches;
+    std::vector<std::vector<std::vector<DMatch>>> objectMatches;
+    std::vector<KeyPoint> imageKP;
+    Mat imageDesc;
 
 
 public slots:
@@ -73,8 +77,9 @@ public slots:
 
     void actualizarColeccion();
     void addObj();
-    void delObj(int indice);
+    void delObj();
     void mostrar(int indice);
+    void detectarImagen();
 
     /********************/
     void selectWindow(QPointF p, int w, int h);

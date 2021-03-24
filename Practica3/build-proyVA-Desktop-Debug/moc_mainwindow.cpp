@@ -49,8 +49,8 @@ QT_MOC_LITERAL(14, 149, 1), // "p"
 QT_MOC_LITERAL(15, 151, 19), // "actualizarColeccion"
 QT_MOC_LITERAL(16, 171, 6), // "addObj"
 QT_MOC_LITERAL(17, 178, 6), // "delObj"
-QT_MOC_LITERAL(18, 185, 6), // "indice"
-QT_MOC_LITERAL(19, 192, 7), // "mostrar"
+QT_MOC_LITERAL(18, 185, 7), // "mostrar"
+QT_MOC_LITERAL(19, 193, 6), // "indice"
 QT_MOC_LITERAL(20, 200, 12), // "selectWindow"
 QT_MOC_LITERAL(21, 213, 1), // "w"
 QT_MOC_LITERAL(22, 215, 1), // "h"
@@ -62,7 +62,7 @@ QT_MOC_LITERAL(23, 217, 14) // "deselectWindow"
     "loadFromFile\0saveToFile\0copyChannels\0"
     "copyWindow\0resizeWin\0enlargeWin\0"
     "pixelValue\0p\0actualizarColeccion\0"
-    "addObj\0delObj\0indice\0mostrar\0selectWindow\0"
+    "addObj\0delObj\0mostrar\0indice\0selectWindow\0"
     "w\0h\0deselectWindow"
 };
 #undef QT_MOC_LITERAL
@@ -93,10 +93,10 @@ static const uint qt_meta_data_MainWindow[] = {
       13,    1,  107,    2, 0x0a /* Public */,
       15,    0,  110,    2, 0x0a /* Public */,
       16,    0,  111,    2, 0x0a /* Public */,
-      17,    1,  112,    2, 0x0a /* Public */,
-      19,    1,  115,    2, 0x0a /* Public */,
-      20,    3,  118,    2, 0x0a /* Public */,
-      23,    1,  125,    2, 0x0a /* Public */,
+      17,    0,  112,    2, 0x0a /* Public */,
+      18,    1,  113,    2, 0x0a /* Public */,
+      20,    3,  116,    2, 0x0a /* Public */,
+      23,    1,  123,    2, 0x0a /* Public */,
 
  // slots: parameters
     QMetaType::Void,
@@ -111,8 +111,8 @@ static const uint qt_meta_data_MainWindow[] = {
     QMetaType::Void, QMetaType::QPointF,   14,
     QMetaType::Void,
     QMetaType::Void,
-    QMetaType::Void, QMetaType::Int,   18,
-    QMetaType::Void, QMetaType::Int,   18,
+    QMetaType::Void,
+    QMetaType::Void, QMetaType::Int,   19,
     QMetaType::Void, QMetaType::QPointF, QMetaType::Int, QMetaType::Int,   14,   21,   22,
     QMetaType::Void, QMetaType::QPointF,   14,
 
@@ -137,7 +137,7 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 9: _t->pixelValue((*reinterpret_cast< QPointF(*)>(_a[1]))); break;
         case 10: _t->actualizarColeccion(); break;
         case 11: _t->addObj(); break;
-        case 12: _t->delObj((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 12: _t->delObj(); break;
         case 13: _t->mostrar((*reinterpret_cast< int(*)>(_a[1]))); break;
         case 14: _t->selectWindow((*reinterpret_cast< QPointF(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2])),(*reinterpret_cast< int(*)>(_a[3]))); break;
         case 15: _t->deselectWindow((*reinterpret_cast< QPointF(*)>(_a[1]))); break;

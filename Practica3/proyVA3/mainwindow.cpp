@@ -12,7 +12,7 @@ MainWindow::MainWindow(QWidget *parent) :
     colorSelected = false;
 
     detector = ORB::create();
-    matcher = BFMatcher::create();
+    matcher = cv::BFMatcher::create(NORM_HAMMING);
     objectWins.resize(numObjetos);
     objectKP.resize(numObjetos);
     objectDesc.resize(numObjetos);
@@ -82,6 +82,8 @@ void MainWindow::compute()
 
 
     //En este punto se debe incluir el código asociado con el procesamiento de cada captura
+
+    detectarImagen();
 
 
     //Actualización de los visores
@@ -331,14 +333,6 @@ void MainWindow::actualizarColeccion(){
 
 void MainWindow::mostrar(int indice){
 
-    //Mostrar
-  // connect con un slot
-  //crear slot generico para ir mostrando la que elijamos
- // si hay imagen? empty
- //  objectWins[i].rows->h
- //  objectWins[i].cols->w
- //  objectWins[i].copyTo(destGrayImage(win->Rect));
-
   destGrayImage.setTo(0);
 
   if(!objectWins[indice].empty()){
@@ -389,9 +383,14 @@ void MainWindow::addObj(){
     }
 
     //si no hay alguno de los objetos de la colección, llamamos a del, si no
-    if(objectKP[ui->comboBox->currentIndex()].empty()){
-        qDebug("Borramos");
-        delObj(ui->comboBox->currentIndex());
+    if(salir){
+        qDebug("BORRAMOS!!!!!");
+        objectKP[ui->comboBox->currentIndex()].clear();
+        qDebug("Borramos kp");
+        objectDesc[ui->comboBox->currentIndex()].clear();
+        qDebug("Borramos desc");
+        actualizarColeccion();
+        //delObj(ui->comboBox->currentIndex());
     }
     else{
         qDebug("Hay objetos en la coleccion, estamos en addobj");
@@ -402,14 +401,42 @@ void MainWindow::addObj(){
 }
 
 
-void MainWindow::delObj(int indice){
+void MainWindow::delObj(){
     qDebug("Entramos en DELOBJ");
-    objectWins[indice] = Mat();
-    objectKP[indice].clear();
-    qDebug("Borramos kp");
-    objectDesc[indice].clear();
-    qDebug("Borramos desc");
-    actualizarColeccion();
+    if(!objectKP[ui->comboBox->currentIndex()].empty()){
+        objectWins[ui->comboBox->currentIndex()] = Mat();
+        objectKP[ui->comboBox->currentIndex()].clear();
+        qDebug("Borramos kp");
+        objectDesc[ui->comboBox->currentIndex()].clear();
+        qDebug("Borramos desc");
+        actualizarColeccion();
+        destGrayImage.setTo(0);
+
+     }
+}
+
+void MainWindow::detectarImagen(){
+   if(!matcher.empty()){
+        //detectAndCompute
+        //imageKp son los keypoint de grayImage e imageDesc son descriptores de gray image
+        detector->detectAndCompute(grayImage, cv::noArray(),imageKP,imageDesc, false);
+        //DMatch tiene de atributos los que ponen en mx
+
+         matcher->knnMatch(imageDesc, matches, 3);
+
+         //recorremos con 2 for matches
+         for(int i = 0; i< matches.size(); i++){
+             for(int j = 0; j<matches[i].size(); j++){
+
+                 if(matches[i][j].distance<=30){
+                     int ob = colect2Object[matches[i][j].imgIdx/3];
+                     int scala = matches[i][j].imgIdx%3;
+                     objectMatches[ob][scala].push_back(matches[i][j]); //insercion al final
+                 }
+             }
+         }
+         //HACER AQUI point2f
+     }
 }
 
 
