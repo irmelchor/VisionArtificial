@@ -21,8 +21,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_MainWindow_t {
-    QByteArrayData data[24];
-    char stringdata0[232];
+    QByteArrayData data[25];
+    char stringdata0[247];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -51,10 +51,11 @@ QT_MOC_LITERAL(16, 171, 6), // "addObj"
 QT_MOC_LITERAL(17, 178, 6), // "delObj"
 QT_MOC_LITERAL(18, 185, 7), // "mostrar"
 QT_MOC_LITERAL(19, 193, 6), // "indice"
-QT_MOC_LITERAL(20, 200, 12), // "selectWindow"
-QT_MOC_LITERAL(21, 213, 1), // "w"
-QT_MOC_LITERAL(22, 215, 1), // "h"
-QT_MOC_LITERAL(23, 217, 14) // "deselectWindow"
+QT_MOC_LITERAL(20, 200, 14), // "detectarImagen"
+QT_MOC_LITERAL(21, 215, 12), // "selectWindow"
+QT_MOC_LITERAL(22, 228, 1), // "w"
+QT_MOC_LITERAL(23, 230, 1), // "h"
+QT_MOC_LITERAL(24, 232, 14) // "deselectWindow"
 
     },
     "MainWindow\0compute\0\0start_stop_capture\0"
@@ -62,8 +63,9 @@ QT_MOC_LITERAL(23, 217, 14) // "deselectWindow"
     "loadFromFile\0saveToFile\0copyChannels\0"
     "copyWindow\0resizeWin\0enlargeWin\0"
     "pixelValue\0p\0actualizarColeccion\0"
-    "addObj\0delObj\0mostrar\0indice\0selectWindow\0"
-    "w\0h\0deselectWindow"
+    "addObj\0delObj\0mostrar\0indice\0"
+    "detectarImagen\0selectWindow\0w\0h\0"
+    "deselectWindow"
 };
 #undef QT_MOC_LITERAL
 
@@ -73,7 +75,7 @@ static const uint qt_meta_data_MainWindow[] = {
        8,       // revision
        0,       // classname
        0,    0, // classinfo
-      16,   14, // methods
+      17,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -81,22 +83,23 @@ static const uint qt_meta_data_MainWindow[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags
-       1,    0,   94,    2, 0x0a /* Public */,
-       3,    1,   95,    2, 0x0a /* Public */,
-       5,    1,   98,    2, 0x0a /* Public */,
-       7,    0,  101,    2, 0x0a /* Public */,
-       8,    0,  102,    2, 0x0a /* Public */,
-       9,    0,  103,    2, 0x0a /* Public */,
-      10,    0,  104,    2, 0x0a /* Public */,
-      11,    0,  105,    2, 0x0a /* Public */,
-      12,    0,  106,    2, 0x0a /* Public */,
-      13,    1,  107,    2, 0x0a /* Public */,
-      15,    0,  110,    2, 0x0a /* Public */,
-      16,    0,  111,    2, 0x0a /* Public */,
-      17,    0,  112,    2, 0x0a /* Public */,
-      18,    1,  113,    2, 0x0a /* Public */,
-      20,    3,  116,    2, 0x0a /* Public */,
-      23,    1,  123,    2, 0x0a /* Public */,
+       1,    0,   99,    2, 0x0a /* Public */,
+       3,    1,  100,    2, 0x0a /* Public */,
+       5,    1,  103,    2, 0x0a /* Public */,
+       7,    0,  106,    2, 0x0a /* Public */,
+       8,    0,  107,    2, 0x0a /* Public */,
+       9,    0,  108,    2, 0x0a /* Public */,
+      10,    0,  109,    2, 0x0a /* Public */,
+      11,    0,  110,    2, 0x0a /* Public */,
+      12,    0,  111,    2, 0x0a /* Public */,
+      13,    1,  112,    2, 0x0a /* Public */,
+      15,    0,  115,    2, 0x0a /* Public */,
+      16,    0,  116,    2, 0x0a /* Public */,
+      17,    0,  117,    2, 0x0a /* Public */,
+      18,    1,  118,    2, 0x0a /* Public */,
+      20,    0,  121,    2, 0x0a /* Public */,
+      21,    3,  122,    2, 0x0a /* Public */,
+      24,    1,  129,    2, 0x0a /* Public */,
 
  // slots: parameters
     QMetaType::Void,
@@ -113,7 +116,8 @@ static const uint qt_meta_data_MainWindow[] = {
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void, QMetaType::Int,   19,
-    QMetaType::Void, QMetaType::QPointF, QMetaType::Int, QMetaType::Int,   14,   21,   22,
+    QMetaType::Void,
+    QMetaType::Void, QMetaType::QPointF, QMetaType::Int, QMetaType::Int,   14,   22,   23,
     QMetaType::Void, QMetaType::QPointF,   14,
 
        0        // eod
@@ -139,8 +143,9 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 11: _t->addObj(); break;
         case 12: _t->delObj(); break;
         case 13: _t->mostrar((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 14: _t->selectWindow((*reinterpret_cast< QPointF(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2])),(*reinterpret_cast< int(*)>(_a[3]))); break;
-        case 15: _t->deselectWindow((*reinterpret_cast< QPointF(*)>(_a[1]))); break;
+        case 14: _t->detectarImagen(); break;
+        case 15: _t->selectWindow((*reinterpret_cast< QPointF(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2])),(*reinterpret_cast< int(*)>(_a[3]))); break;
+        case 16: _t->deselectWindow((*reinterpret_cast< QPointF(*)>(_a[1]))); break;
         default: ;
         }
     }
@@ -175,13 +180,13 @@ int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 16)
+        if (_id < 17)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 16;
+        _id -= 17;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 16)
+        if (_id < 17)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 16;
+        _id -= 17;
     }
     return _id;
 }

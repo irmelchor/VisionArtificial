@@ -416,7 +416,9 @@ void MainWindow::delObj(){
 }
 
 void MainWindow::detectarImagen(){
-   if(!matcher.empty()){
+
+   if(!matcher->empty()){
+       qDebug()<< "ENTRAMOS EN EL IF DE DETECTAR IMAGEN";
         //detectAndCompute
         //imageKp son los keypoint de grayImage e imageDesc son descriptores de gray image
         detector->detectAndCompute(grayImage, cv::noArray(),imageKP,imageDesc, false);
@@ -436,6 +438,51 @@ void MainWindow::detectarImagen(){
              }
          }
          //HACER AQUI point2f
+     //
+         std::vector<Point2f> imagePoints;
+         std::vector<Point2f> objectPoints;
+
+         std::vector<DMatch> listaFinal;
+
+         for(int obj= 0; obj<numObjetos;obj++){
+             int i =0, mejor;
+             if(objectMatches[obj][escalas[i]].size() > objectMatches[obj][escalas[i+1]].size() && objectMatches[obj][escalas[i]].size() > objectMatches[obj][escalas[i+2]].size())
+                 mejor = i;
+             else if(objectMatches[obj][escalas[i+1]].size() > objectMatches[obj][escalas[i+2]].size())
+                 mejor = i+1;
+             else
+                 mejor = i+2;
+
+
+             listaFinal = objectMatches[obj][escalas[mejor]];
+
+             for(int i = 0; i<listaFinal.size(); i++){
+                 imagePoints[i] = imageKP[listaFinal[i].queryIdx].pt;
+                 objectPoints[i]=objectKP[obj][escalas[mejor]][listaFinal[i].trainIdx].pt;
+             }
+
+             Mat H = findHomography(objectPoints,imagePoints, LMEDS);
+
+             std::vector<Point2f> objectCorners;
+             float h = objectWins[obj].cols * escalas[mejor];
+             float w = objectWins[obj].rows * escalas[mejor];
+             objectCorners = {Point2f(0,0), Point2f(w-1,0), Point2f(w-1,h-1), Point2f(0, h-1)};
+             std::vector<Point2f> imageCorners;
+
+             perspectiveTransform(objectCorners, imageCorners, H);
+
+             //recorrer lista imageCorners para mostrar las líneas
+             QPointF punto, punto1;
+             for(int i =0; i<imageCorners.size(); i++){
+                 punto.setX(imageCorners[i].x);
+                 punto.setY(imageCorners[i].y);
+                 punto1.setX(imageCorners[(i+1)%4].x);
+                 punto1.setY(imageCorners[(i+1)%4].y);
+                 QLineF linea(punto, punto1);
+                 visorS->drawLine(linea, Qt::green, 1);
+             }
+         }
+         //
      }
 }
 
