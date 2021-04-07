@@ -20,6 +20,11 @@ MainWindow::MainWindow(QWidget *parent) :
     escalas[0] = 1.25;
     escalas[1] = 1.;
     escalas[2] = 0.75;
+    colect2Object.resize(numObjetos);
+    objectMatches.resize(numObjetos);
+    for(int i = 0; i<3; i++){
+        objectMatches[i].resize(numObjetos);
+    }
 
     colorImage.create(240,320,CV_8UC3);
     grayImage.create(240,320,CV_8UC1);
@@ -82,8 +87,9 @@ void MainWindow::compute()
 
 
     //En este punto se debe incluir el código asociado con el procesamiento de cada captura
-
+qDebug()<<"Vamos a proceder a detectar la imagen";
     detectarImagen();
+    qDebug()<<"Se terminó de detectar la imagen";
 
 
     //Actualización de los visores
@@ -323,9 +329,13 @@ void MainWindow::pixelValue(QPointF p){
 
 void MainWindow::actualizarColeccion(){
     matcher->clear();
+    int iColeccion=0;
     for(int i = 0; i<numObjetos; i++){
-        if(!objectDesc[i].empty())
+        if(!objectDesc[i].empty()){
             matcher->add(objectDesc[i]);
+            colect2Object[iColeccion]=i;
+            iColeccion++;
+        }
     }
     qDebug("Actualizamos coleccion");
 
@@ -398,6 +408,7 @@ void MainWindow::addObj(){
         mostrar(ui->comboBox->currentIndex());
     }
     /*********************/
+    winSelected = false;
 }
 
 
@@ -421,19 +432,32 @@ void MainWindow::detectarImagen(){
        qDebug()<< "ENTRAMOS EN EL IF DE DETECTAR IMAGEN";
         //detectAndCompute
         //imageKp son los keypoint de grayImage e imageDesc son descriptores de gray image
+       qDebug()<<"Procedemos a detectAndCompute";
         detector->detectAndCompute(grayImage, cv::noArray(),imageKP,imageDesc, false);
         //DMatch tiene de atributos los que ponen en mx
-
+        qDebug()<<"Procedemos a knnMatch";
          matcher->knnMatch(imageDesc, matches, 3);
 
+         for(int i = 0; i<numObjetos; i++){
+             for(int j = 0; j<numEscalas; j++){
+                 objectMatches[i][j].clear();
+             }
+         }
+
          //recorremos con 2 for matches
+         qDebug()<<"Vamos a recorrer los 2 for matches";
          for(int i = 0; i< matches.size(); i++){
              for(int j = 0; j<matches[i].size(); j++){
-
+                 //qDebug()<<"dentro de los dos for";
                  if(matches[i][j].distance<=30){
+                     //qDebug()<<"Estamos dentro de la comprobación de la distancia";
                      int ob = colect2Object[matches[i][j].imgIdx/3];
+                     //qDebug()<<"Hemos conseguido el objeto";
                      int scala = matches[i][j].imgIdx%3;
+                     //qDebug()<<"Hemos conseguido la escala"<<ob<<scala;
+
                      objectMatches[ob][scala].push_back(matches[i][j]); //insercion al final
+                     //qDebug()<<"Hemos hecho push_back";
                  }
              }
          }
@@ -445,43 +469,60 @@ void MainWindow::detectarImagen(){
          std::vector<DMatch> listaFinal;
 
          for(int obj= 0; obj<numObjetos;obj++){
-             int i =0, mejor;
-             if(objectMatches[obj][escalas[i]].size() > objectMatches[obj][escalas[i+1]].size() && objectMatches[obj][escalas[i]].size() > objectMatches[obj][escalas[i+2]].size())
-                 mejor = i;
-             else if(objectMatches[obj][escalas[i+1]].size() > objectMatches[obj][escalas[i+2]].size())
-                 mejor = i+1;
+             //qDebug()<<"Entramos en el primer for. Comprobamos cual tiene más";
+             int mejor=0;
+             if(objectMatches[obj][0].size() > objectMatches[obj][1].size() && objectMatches[obj][0].size() > objectMatches[obj][2].size())
+                 mejor = 0;
+             else if(objectMatches[obj][1].size() > objectMatches[obj][2].size())
+                 mejor = 1;
              else
-                 mejor = i+2;
+                 mejor = 2;
 
+             //qDebug()<<"Terminamos la comparacion";
 
-             listaFinal = objectMatches[obj][escalas[mejor]];
+             listaFinal = objectMatches[obj][mejor];
 
              for(int i = 0; i<listaFinal.size(); i++){
-                 imagePoints[i] = imageKP[listaFinal[i].queryIdx].pt;
-                 objectPoints[i]=objectKP[obj][escalas[mejor]][listaFinal[i].trainIdx].pt;
+                 //qDebug()<<"Entramos en el for de recorrer lista final";
+                 imagePoints.push_back(imageKP[listaFinal[i].queryIdx].pt);
+                 visorS->drawSquare(QPoint(imageKP[listaFinal[i].queryIdx].pt.x, imageKP[listaFinal[i].queryIdx].pt.y), 3, 3, Qt::blue, true);
+                 objectPoints.push_back(objectKP[obj][mejor][listaFinal[i].trainIdx].pt);
              }
-
+             qDebug()<<"Ya estamos fuera del for de la lista final"<<listaFinal.size();
              Mat H = findHomography(objectPoints,imagePoints, LMEDS);
 
-             std::vector<Point2f> objectCorners;
-             float h = objectWins[obj].cols * escalas[mejor];
-             float w = objectWins[obj].rows * escalas[mejor];
-             objectCorners = {Point2f(0,0), Point2f(w-1,0), Point2f(w-1,h-1), Point2f(0, h-1)};
-             std::vector<Point2f> imageCorners;
+             //Comprobar si la H está vacía o no
+             qDebug()<<"Comprobamos si la H está vacía";
+             if(!H.empty()){
+                 qDebug()<<"H no está vacía";
+                 std::vector<Point2f> objectCorners;
+                 float h = objectWins[obj].cols * escalas[mejor];
+                 float w = objectWins[obj].rows * escalas[mejor];
+                 objectCorners = {Point2f(0,0), Point2f(w-1,0), Point2f(w-1,h-1), Point2f(0, h-1)};
+                 std::vector<Point2f> imageCorners;
+                 qDebug()<<"Realizamos la prespective transform";
+                 perspectiveTransform(objectCorners, imageCorners, H);
+                 qDebug()<<"Terminamos la perspective transform";
 
-             perspectiveTransform(objectCorners, imageCorners, H);
-
-             //recorrer lista imageCorners para mostrar las líneas
-             QPointF punto, punto1;
-             for(int i =0; i<imageCorners.size(); i++){
-                 punto.setX(imageCorners[i].x);
-                 punto.setY(imageCorners[i].y);
-                 punto1.setX(imageCorners[(i+1)%4].x);
-                 punto1.setY(imageCorners[(i+1)%4].y);
-                 QLineF linea(punto, punto1);
-                 visorS->drawLine(linea, Qt::green, 1);
+                 //recorrer lista imageCorners para mostrar las líneas
+                 QPointF punto, punto1;
+                 qDebug()<<"Vamos a entrar en el último for";
+                 for(int i =0; i<imageCorners.size(); i++){
+                     //qDebug()<<"Dentro del último for";
+                     punto.setX(imageCorners[i].x);
+                     punto.setY(imageCorners[i].y);
+                     punto1.setX(imageCorners[(i+1)%4].x);
+                     punto1.setY(imageCorners[(i+1)%4].y);
+                     QLineF linea(punto, punto1);
+                     visorS->drawLine(linea, Qt::red , 5);
+                 }
+                  qDebug()<<"FUERA DEL ULTIMO FOR";
+             }
+             else{
+                qDebug()<<"LA H está vacía";
              }
          }
+         qDebug()<<"Terminamos FOR COMPLETO";
          //
      }
 }
