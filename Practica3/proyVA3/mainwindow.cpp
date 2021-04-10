@@ -436,6 +436,7 @@ void MainWindow::detectarImagen(){
         detector->detectAndCompute(grayImage, cv::noArray(),imageKP,imageDesc, false);
         //DMatch tiene de atributos los que ponen en mx
         qDebug()<<"Procedemos a knnMatch";
+        matches.clear();///
          matcher->knnMatch(imageDesc, matches, 3);
 
          for(int i = 0; i<numObjetos; i++){
@@ -449,7 +450,7 @@ void MainWindow::detectarImagen(){
          for(int i = 0; i< matches.size(); i++){
              for(int j = 0; j<matches[i].size(); j++){
                  //qDebug()<<"dentro de los dos for";
-                 if(matches[i][j].distance<=30){
+                 if(matches[i][j].distance<=40){ ///
                      //qDebug()<<"Estamos dentro de la comprobación de la distancia";
                      int ob = colect2Object[matches[i][j].imgIdx/3];
                      //qDebug()<<"Hemos conseguido el objeto";
@@ -482,44 +483,49 @@ void MainWindow::detectarImagen(){
 
              listaFinal = objectMatches[obj][mejor];
 
-             for(int i = 0; i<listaFinal.size(); i++){
-                 //qDebug()<<"Entramos en el for de recorrer lista final";
-                 imagePoints.push_back(imageKP[listaFinal[i].queryIdx].pt);
-                 visorS->drawSquare(QPoint(imageKP[listaFinal[i].queryIdx].pt.x, imageKP[listaFinal[i].queryIdx].pt.y), 3, 3, Qt::blue, true);
-                 objectPoints.push_back(objectKP[obj][mejor][listaFinal[i].trainIdx].pt);
-             }
-             qDebug()<<"Ya estamos fuera del for de la lista final"<<listaFinal.size();
-             Mat H = findHomography(objectPoints,imagePoints, LMEDS);
+             if(listaFinal.size()>10) ///
+             {
 
-             //Comprobar si la H está vacía o no
-             qDebug()<<"Comprobamos si la H está vacía";
-             if(!H.empty()){
-                 qDebug()<<"H no está vacía";
-                 std::vector<Point2f> objectCorners;
-                 float h = objectWins[obj].cols * escalas[mejor];
-                 float w = objectWins[obj].rows * escalas[mejor];
-                 objectCorners = {Point2f(0,0), Point2f(w-1,0), Point2f(w-1,h-1), Point2f(0, h-1)};
-                 std::vector<Point2f> imageCorners;
-                 qDebug()<<"Realizamos la prespective transform";
-                 perspectiveTransform(objectCorners, imageCorners, H);
-                 qDebug()<<"Terminamos la perspective transform";
-
-                 //recorrer lista imageCorners para mostrar las líneas
-                 QPointF punto, punto1;
-                 qDebug()<<"Vamos a entrar en el último for";
-                 for(int i =0; i<imageCorners.size(); i++){
-                     //qDebug()<<"Dentro del último for";
-                     punto.setX(imageCorners[i].x);
-                     punto.setY(imageCorners[i].y);
-                     punto1.setX(imageCorners[(i+1)%4].x);
-                     punto1.setY(imageCorners[(i+1)%4].y);
-                     QLineF linea(punto, punto1);
-                     visorS->drawLine(linea, Qt::red , 5);
+                 for(int i = 0; i<listaFinal.size(); i++){
+                     //qDebug()<<"Entramos en el for de recorrer lista final";
+                     imagePoints.push_back(imageKP[listaFinal[i].queryIdx].pt);
+                     //visorS->drawSquare(QPoint(imageKP[listaFinal[i].queryIdx].pt.x, imageKP[listaFinal[i].queryIdx].pt.y), 3, 3, Qt::blue, true);
+                     objectPoints.push_back(objectKP[obj][mejor][listaFinal[i].trainIdx].pt);
+                     //visorD->drawSquare(QPoint(objectKP[obj][mejor][listaFinal[i].trainIdx].pt.x, objectKP[obj][mejor][listaFinal[i].trainIdx].pt.y), 3, 3, Qt::blue, true);
                  }
-                  qDebug()<<"FUERA DEL ULTIMO FOR";
-             }
-             else{
-                qDebug()<<"LA H está vacía";
+                 qDebug()<<"Ya estamos fuera del for de la lista final"<<listaFinal.size();
+                 Mat H = findHomography(objectPoints,imagePoints, LMEDS);
+
+                 //Comprobar si la H está vacía o no
+                 qDebug()<<"Comprobamos si la H está vacía";
+                 if(!H.empty()){
+                     qDebug()<<"H no está vacía";
+                     std::vector<Point2f> objectCorners;
+                     float h = objectWins[obj].rows * escalas[mejor];  /// h es rows
+                     float w = objectWins[obj].cols * escalas[mejor];  /// w es cols
+                     objectCorners = {Point2f(0,0), Point2f(w-1,0), Point2f(w-1,h-1), Point2f(0, h-1)};
+                     std::vector<Point2f> imageCorners;
+                     qDebug()<<"Realizamos la prespective transform";
+                     perspectiveTransform(objectCorners, imageCorners, H);
+                     qDebug()<<"Terminamos la perspective transform";
+
+                     //recorrer lista imageCorners para mostrar las líneas
+                     QPointF punto, punto1;
+                     qDebug()<<"Vamos a entrar en el último for";
+                     for(int i =0; i<imageCorners.size(); i++){
+                         //qDebug()<<"Dentro del último for";
+                         punto.setX(imageCorners[i].x);
+                         punto.setY(imageCorners[i].y);
+                         punto1.setX(imageCorners[(i+1)%4].x);
+                         punto1.setY(imageCorners[(i+1)%4].y);
+                         QLineF linea(punto, punto1);
+                         visorS->drawLine(linea, Qt::red , 5);
+                     }
+                      qDebug()<<"FUERA DEL ULTIMO FOR";
+                 }
+                 else{
+                    qDebug()<<"LA H está vacía";
+                 }
              }
          }
          qDebug()<<"Terminamos FOR COMPLETO";
@@ -557,5 +563,4 @@ void MainWindow::deselectWindow(QPointF p)
     std::ignore = p;
     winSelected = false;
 }
-
 
