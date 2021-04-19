@@ -41,9 +41,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->colorButton,SIGNAL(clicked(bool)),this,SLOT(change_color_gray(bool)));
 
     /********************/
- /*   connect(ui->loadButton,SIGNAL(clicked(bool)),this,SLOT(loadFromFile(void)));
-    connect(ui->saveButton,SIGNAL(clicked(bool)),this,SLOT(saveToFile(void)));
-    connect(ui->copyChannelsButton,SIGNAL(clicked(bool)),this,SLOT(copyChannels(void)));
+ /* connect(ui->copyChannelsButton,SIGNAL(clicked(bool)),this,SLOT(copyChannels(void)));
     connect(ui->copyWindowButton,SIGNAL(clicked(bool)),this,SLOT(copyWindow(void)));
     connect(ui->enlargeButton,SIGNAL(clicked(bool)),this,SLOT(enlargeWin(void)));
     connect(ui->resizeButton,SIGNAL(clicked(bool)),this,SLOT(resizeWin(void)));
@@ -52,6 +50,9 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->addObject,SIGNAL(clicked()),this,SLOT(addObj()));
     connect(ui->delObject,SIGNAL(clicked()),this,SLOT(delObj()));
     connect(ui->comboBox, SIGNAL(currentIndexChanged(int)),this,SLOT(mostrar(int)));
+    connect(ui->loadButton,SIGNAL(clicked(bool)),this,SLOT(loadFromFile(void)));
+    connect(ui->saveButton,SIGNAL(clicked(bool)),this,SLOT(saveToFile(void)));
+
 
 
     /********************/
@@ -87,9 +88,9 @@ void MainWindow::compute()
 
 
     //En este punto se debe incluir el código asociado con el procesamiento de cada captura
-qDebug()<<"Vamos a proceder a detectar la imagen";
+    //qDebug()<<"Vamos a proceder a detectar la imagen";
     detectarImagen();
-    qDebug()<<"Se terminó de detectar la imagen";
+    //qDebug()<<"Se terminó de detectar la imagen";
 
 
     //Actualización de los visores
@@ -133,39 +134,51 @@ void MainWindow::loadFromFile(){
 
     disconnect(&timer,SIGNAL(timeout()),this,SLOT(compute()));
     ui->captureButton->setCheckable(false);
-    start_stop_capture(false);
+    //start_stop_capture(false);
 
-    QString ruta = QFileDialog::getOpenFileName(this, "Open File", "/home/irene/Escritorio/VisionArtificial","Images (*.png *.xpm *.jpg)");
-    std::string rutaImagen = ruta.toStdString();
-    Mat loadImg = imread(rutaImagen);
+    //QStringList 	entryList(const QStringList &nameFilters, QDir::Filters filters = NoFilter, QDir::SortFlags sort = NoSort) const
+    //QStringList 	entryList(QDir::Filters filters = NoFilter, QDir::SortFlags sort = NoSort) const
 
-    cv::resize(loadImg, loadImg, Size(320, 240));
-    cvtColor(loadImg,colorImage,COLOR_BGR2RGB);
-    cvtColor(loadImg,grayImage,COLOR_BGR2GRAY);
+    //Esto nos da una lista, la cual tenemos que recorrer y elegir como mucho los 3 primeros.
+    //Hay que hacer algo parecido al add
+
+    //QString ruta = QFileDialog::getOpenFileName(this, "Open File", "/home/irene/Escritorio/VisionArtificial","Images (*.png *.xpm *.jpg)");
+    std::string nombre = "Calculadora";
+    std::string rutaImagen= "/home/irene/Escritorio/VisionArtificial/Practica3/proyVA3/ImagenesGuardadas/Perro.png";
+    //std::string rutaImagen = ruta.toStdString();
+     //for(int i = 0; i< numObjetos; i++){
+        Mat loadImg = imread(rutaImagen);
+        cvtColor(loadImg,destGrayImage,COLOR_BGR2GRAY);
+       // }
+     //}
+
+    //cv::resize(loadImg, loadImg, Size(320, 240));
+
 
     connect(&timer,SIGNAL(timeout()),this,SLOT(compute()));
     ui->captureButton->setCheckable(true);
-    start_stop_capture(true);
+    //start_stop_capture(true);
 }
 
 
 void MainWindow::saveToFile(){
 
-    destColorImage.setTo(0);
-    destGrayImage.setTo(0);
+    //destColorImage.setTo(0);
+    //destGrayImage.setTo(0);
 
     disconnect(&timer,SIGNAL(timeout()),this,SLOT(compute()));
 
-    QString file = QFileDialog::getSaveFileName(this, "Save file");
-    std::string rutafichero= file.toStdString();
-    Mat saveColorImage;
+    //QString file = QFileDialog::getSaveFileName(this, "Save file");
+   //Cambiar ruta dependiendo del ordenador //file.toStdString();
 
-    if(colorSelected){
-        cvtColor(destColorImage,saveColorImage,COLOR_RGB2BGR);
-        imwrite(rutafichero,saveColorImage);
-
-    }else{
-        imwrite(rutafichero,destGrayImage);
+    //bucle por cad uno de los objetos: comprobar si objectwins de cada objeto tiene contenido. Si está vacío no tiene objeto.
+    //Con el nombre del combo box metiendo la extensión
+    for(int i = 0; i< numObjetos; i++){
+        if(!objectWins[i].empty()){
+            QString nombre = ui->comboBox->itemText(i);
+            std::string rutafichero= "/home/irene/Escritorio/VisionArtificial/Practica3/proyVA3/ImagenesGuardadas/"+nombre.toStdString()+".png";
+            imwrite(rutafichero,objectWins[i]);
+        }
     }
 
     connect(&timer,SIGNAL(timeout()),this,SLOT(compute()));
@@ -357,7 +370,7 @@ void MainWindow::mostrar(int indice){
 
   }
   else{
-      qDebug("Entramos porque SI está vacio");
+      //qDebug("Entramos porque SI está vacio");
       destColorImage.setTo(0);
       destGrayImage.setTo(0);
   }
@@ -394,16 +407,16 @@ void MainWindow::addObj(){
 
     //si no hay alguno de los objetos de la colección, llamamos a del, si no
     if(salir){
-        qDebug("BORRAMOS!!!!!");
+        //qDebug("BORRAMOS!!!!!");
         objectKP[ui->comboBox->currentIndex()].clear();
-        qDebug("Borramos kp");
+        //qDebug("Borramos kp");
         objectDesc[ui->comboBox->currentIndex()].clear();
-        qDebug("Borramos desc");
+        //qDebug("Borramos desc");
         actualizarColeccion();
         //delObj(ui->comboBox->currentIndex());
     }
     else{
-        qDebug("Hay objetos en la coleccion, estamos en addobj");
+        //qDebug("Hay objetos en la coleccion, estamos en addobj");
         actualizarColeccion();
         mostrar(ui->comboBox->currentIndex());
     }
@@ -511,7 +524,8 @@ void MainWindow::detectarImagen(){
 
                      //recorrer lista imageCorners para mostrar las líneas
                      QPointF punto, punto1;
-                     qDebug()<<"Vamos a entrar en el último for";
+                     QPointF sumaPuntos;
+                     //qDebug()<<"Vamos a entrar en el último for";
                      for(int i =0; i<imageCorners.size(); i++){
                          //qDebug()<<"Dentro del último for";
                          punto.setX(imageCorners[i].x);
@@ -520,15 +534,21 @@ void MainWindow::detectarImagen(){
                          punto1.setY(imageCorners[(i+1)%4].y);
                          QLineF linea(punto, punto1);
                          visorS->drawLine(linea, Qt::red , 5);
+                         sumaPuntos +=punto;
+
                      }
-                      qDebug()<<"FUERA DEL ULTIMO FOR";
+
+                     sumaPuntos = sumaPuntos/4;
+
+                     visorS->drawText(QPoint(sumaPuntos.x(),sumaPuntos.y()), ui->comboBox->itemText(obj), 10, Qt::red);
+                      //qDebug()<<"FUERA DEL ULTIMO FOR";
                  }
                  else{
-                    qDebug()<<"LA H está vacía";
+                    //qDebug()<<"LA H está vacía";
                  }
              }
          }
-         qDebug()<<"Terminamos FOR COMPLETO";
+         //qDebug()<<"Terminamos FOR COMPLETO";
          //
      }
 }

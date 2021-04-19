@@ -30,12 +30,14 @@ public:
     QLabel *label;
     QPushButton *addObject;
     QPushButton *delObject;
+    QPushButton *saveButton;
+    QPushButton *loadButton;
 
     void setupUi(QWidget *MainWindow)
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
-        MainWindow->resize(860, 314);
+        MainWindow->resize(860, 329);
         imageFrameS = new QFrame(MainWindow);
         imageFrameS->setObjectName(QString::fromUtf8("imageFrameS"));
         imageFrameS->setGeometry(QRect(20, 20, 320, 240));
@@ -61,19 +63,27 @@ public:
         comboBox->addItem(QString());
         comboBox->addItem(QString());
         comboBox->setObjectName(QString::fromUtf8("comboBox"));
-        comboBox->setGeometry(QRect(730, 140, 111, 25));
+        comboBox->setGeometry(QRect(730, 200, 111, 25));
         comboBox->setEditable(true);
         comboBox->setMaxVisibleItems(3);
         comboBox->setInsertPolicy(QComboBox::InsertAtCurrent);
         label = new QLabel(MainWindow);
         label->setObjectName(QString::fromUtf8("label"));
-        label->setGeometry(QRect(740, 120, 101, 17));
+        label->setGeometry(QRect(740, 180, 101, 17));
         addObject = new QPushButton(MainWindow);
         addObject->setObjectName(QString::fromUtf8("addObject"));
-        addObject->setGeometry(QRect(720, 200, 131, 31));
+        addObject->setGeometry(QRect(720, 240, 131, 31));
         delObject = new QPushButton(MainWindow);
         delObject->setObjectName(QString::fromUtf8("delObject"));
-        delObject->setGeometry(QRect(720, 240, 131, 31));
+        delObject->setGeometry(QRect(720, 280, 131, 31));
+        saveButton = new QPushButton(MainWindow);
+        saveButton->setObjectName(QString::fromUtf8("saveButton"));
+        saveButton->setGeometry(QRect(730, 140, 111, 31));
+        saveButton->setCheckable(true);
+        saveButton->setChecked(false);
+        loadButton = new QPushButton(MainWindow);
+        loadButton->setObjectName(QString::fromUtf8("loadButton"));
+        loadButton->setGeometry(QRect(730, 100, 111, 31));
 
         retranslateUi(MainWindow);
 
@@ -92,6 +102,8 @@ public:
         label->setText(QApplication::translate("MainWindow", "Select Object", nullptr));
         addObject->setText(QApplication::translate("MainWindow", "Add Object Image", nullptr));
         delObject->setText(QApplication::translate("MainWindow", "Del Object Image", nullptr));
+        saveButton->setText(QApplication::translate("MainWindow", "Save Image", nullptr));
+        loadButton->setText(QApplication::translate("MainWindow", "Load Image", nullptr));
     } // retranslateUi
 
 };
