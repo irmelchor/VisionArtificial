@@ -1,0 +1,16 @@
+
+EN LA ULTIMA DIAPOSITIVA DEL TEMA 4!!
+output.ad<float> (idx);
+int idx[4];
+
+id va a tener un valor entre (0-20)
+Esto nos lo comenta en la obtención de la imagen segmentada.
+
+dnn:: o using namespace dnn
+
+
+Fijarnos de la Práctica 2
+En QtDesigner: Tipo dialogo a crear.
+
+Dialogo vacío.
+Añadimos lo que queramos. Lo guardamos y lo añadimos al proyecto.
