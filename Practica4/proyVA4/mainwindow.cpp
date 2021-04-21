@@ -17,10 +17,13 @@ MainWindow::MainWindow(QWidget *parent) :
     destColorImage.setTo(0);
     destGrayImage.create(240,320,CV_8UC1);
     destGrayImage.setTo(0);
+    segmentedImage.create(240,320,CV_8UC1);
+    imgFinal.create(240,320,CV_8UC3);
 
-    //inicializarRed();
-    //visorHistoS = new ImgViewer(260,150, (QImage *) NULL, ui->histoFrameS);
-    //visorHistoD = new ImgViewer(260,150, (QImage *) NULL, ui->histoFrameD);
+
+    inicializarTabla();
+
+    inicializarRed();
 
 
     visorS = new ImgViewer(&grayImage, ui->imageFrameS);
@@ -39,18 +42,6 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(visorS,SIGNAL(mouseClic(QPointF)),this,SLOT(deselectWindow(QPointF)));
 
     connect(ui->segmentImageButton,SIGNAL(clicked(bool)),this,SLOT(segmentar(void)));
-
-    //connect(ui->pixelTButton,SIGNAL(clicked()),&pixelTDialog,SLOT(show()));
-    //connect(pixelTDialog.okButton,SIGNAL(clicked()),&pixelTDialog,SLOT(hide()));
-    //connect(pixelTDialog.grayTransformW, SIGNAL(itemChanged(QTableWidgetItem*)), this, SLOT(controlGrayRanges(QTableWidgetItem*)));
-
-    //connect(ui->kernelButton,SIGNAL(clicked()),&lFilterDialog,SLOT(show()));
-    //connect(lFilterDialog.okButton,SIGNAL(clicked()),&lFilterDialog,SLOT(hide()));
-    //connect(lFilterDialog.kernelWidget, SIGNAL(itemChanged(QTableWidgetItem*)), this, SLOT(controlKernelRanges(QTableWidgetItem*)));
-
-
-    //connect(ui->operOrderButton,SIGNAL(clicked()),&operOrderDialog,SLOT(show()));
-    //connect(operOrderDialog.okButton,SIGNAL(clicked()),&operOrderDialog,SLOT(hide()));
 
 
     timer.start(30);
@@ -81,42 +72,6 @@ void MainWindow::compute()
     }
 
 
-    //Procesamiento
-
-
-    //int metodo = ui->operationComboBox->currentIndex();
-
-    /*switch (metodo) {
-    case 0:
-        pixelTransformation(grayImage,destGrayImage);
-        break;
-    case 1:
-        thresholding(grayImage,destGrayImage);
-        break;
-    case 2:
-        histogramEqualization(grayImage,destGrayImage);
-        break;
-    case 3:
-        gaussianSmoothing(grayImage,destGrayImage);
-        break;
-    case 4:
-        mediumFilter(grayImage,destGrayImage);
-        break;
-    case 5:
-        linealFilter(grayImage,destGrayImage);
-        break;
-    case 6:
-        dilatation(grayImage,destGrayImage);
-        break;
-    case 7:
-        erosion(grayImage,destGrayImage);
-        break;
-    case 8:
-        applySeveral();
-        break;
-    }*/
-
-
     //Actualización de los visores
   //  updateHistogram(grayImage, visorHistoS);
   //  updateHistogram(destGrayImage, visorHistoD);
@@ -133,7 +88,7 @@ void MainWindow::compute()
 }
 
 void MainWindow::inicializarRed(){
-    miRed = readNetFromCaffe("../proyVA4/fcn.prototxt","../proyVA4/fcn.caffemodel");
+    miRed = readNetFromCaffe("../proyVA4/fcn/fcn.prototxt","../proyVA4/fcn/fcn.caffemodel");
 }
 
 void MainWindow::updateHistogram(Mat image, ImgViewer * visor)
@@ -193,20 +148,89 @@ void MainWindow::change_color_gray(bool color)
 
 /***************************/
 
+void MainWindow::inicializarTabla(){
+    tablaColores.push_back({0,0,0});
+    tablaColores.push_back({128,0,0});
+    tablaColores.push_back({0,128,0});
+    tablaColores.push_back({128,128,0});
+    tablaColores.push_back({0,0,128});
+    tablaColores.push_back({128,0,128});
+    tablaColores.push_back({0,128,128});
+    tablaColores.push_back({128,128,128});
+    tablaColores.push_back({64,0,0});
+    tablaColores.push_back({192,0,0});
+    tablaColores.push_back({64,128,0});
+    tablaColores.push_back({192,128,0});
+    tablaColores.push_back({64,0,128});
+    tablaColores.push_back({192,0,128});
+    tablaColores.push_back({64,128,128});
+    tablaColores.push_back({192,128,128});
+    tablaColores.push_back({0,64,0});
+    tablaColores.push_back({128,64,0});
+    tablaColores.push_back({0,192,0});
+    tablaColores.push_back({128,192,0});
+    tablaColores.push_back({0,64,128});
+}
+
+
 void MainWindow::segmentar(){
     Mat imagenFormateada = blobFromImage(colorImage, 1.0, Size(), mean(colorImage), true, false, CV_32F);
     miRed.setInput(imagenFormateada);
-    miRed.forward();
+    Mat output = miRed.forward();
 
-    int catMax=0;
+
     for(int f=0;f<ui->imageWidthBox->value();f++){
+        //qDebug()<<"Entramos en el primer for";
         for(int c=0; c<ui->ImageHeightBox->value();c++){
-            for(int cat=0; cat<20;cat++){ //for de la categoría
+            //qDebug()<<"Entramos en el segundo for";
+            float catMax=0;
+            int icat;
+            for(int cat=0; cat<=20;cat++){ //for de la categoría
+                //qDebug()<<"Entramos en el tercer for";
+                int idx[4]={0,cat,f,c};
+                float val = output.at<float>(idx);
+                  //qDebug()<<"Antes del if"<<cat;
+                if (val > catMax){
+                     // qDebug()<<"Entramos en el if";
+                    catMax = val;
+                    icat = cat;
+                }
             }
-            imgSegm.at<uchar>(f,c)=catMax;
+
+            //qDebug()<<"Hacemos at";
+            segmentedImage.at<uchar>(f,c)=icat;
+            //qDebug()<<"Terminamos at";
         }
     }
+
+    //Llamar al siguiente método
+    visualizacionDeLaSegmentacion();
+
 }
+
+void MainWindow::visualizacionDeLaSegmentacion(){
+    //2 for de la imagen segmentada, para generar imagen de la pag 50. accedemos al pixel, accedemos al índice y vemos el color.
+    for(int f=0; f<segmentedImage.rows;f++){
+        for(int c=0; c<segmentedImage.cols; c++){
+            int indice= segmentedImage.at<uchar>(f,c);
+            imgFinal.at<Vec3b>(f,c)= tablaColores[indice];
+        }
+    }
+    imgFinal.copyTo(destColorImage);
+    //imgFinal.copyTo(destGrayImage);
+
+    sumarImagenes();
+}
+
+void MainWindow::sumarImagenes(){
+    Mat combinada;
+    //segmentedImage -> (1-p)
+    //imgFinal       -> (p)
+
+
+    combinada.copyTo(destColorImage);
+}
+
 
 
 void MainWindow::loadFromFile(){
@@ -217,7 +241,7 @@ void MainWindow::loadFromFile(){
     start_stop_capture(false);
 
 
-    QString ruta = QFileDialog::getOpenFileName(this, "Open File", "/home/irene/Escritorio/VisionArtificial","Images (*.png *.xpm *.jpg)");
+    QString ruta = QFileDialog::getOpenFileName(this, "Open File", "/home/irene/Escritorio/VisionArtificial","Images (*.png *.xpm *.jpg *.jpeg)");
     std::string rutaImagen = ruta.toStdString();
     Mat loadImg = imread(rutaImagen);
 

@@ -83,6 +83,9 @@ private:
     Rect imageWindow;
     bool colorSelected;
     Net miRed;
+    Mat segmentedImage;
+    Mat imgFinal;
+    std::vector<Vec3b> tablaColores;
 
     void updateHistogram(Mat image, ImgViewer * visor);
 
@@ -105,7 +108,10 @@ public slots:
     void applySeveral();
     Mat metodoSwitch(int metodo, Mat src);
     void inicializarRed();
+    void inicializarTabla();
     void segmentar();
+    void visualizacionDeLaSegmentacion();
+    void sumarImagenes();
 
     /**************/
 
