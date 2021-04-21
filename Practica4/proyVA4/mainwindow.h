@@ -10,23 +10,22 @@
 #include <opencv2/videoio/videoio.hpp>
 #include <opencv2/features2d/features2d.hpp>
 #include <opencv2/calib3d/calib3d.hpp>
+#include <opencv2/dnn/dnn.hpp>
 
 #include <imgviewer.h>
-#include <ui_pixelTForm.h>
-#include <ui_lFilterForm.h>
-#include <ui_operOrderForm.h>
-
 #include <QtWidgets/QFileDialog>
+#include <ui_SelectionOfCategories.h>
 
 
-
-
+using namespace dnn;
 using namespace cv;
+
 
 namespace Ui {
     class MainWindow;
 }
 
+/*
 class PixelTDialog : public QDialog, public Ui::PixelTForm
 {
     Q_OBJECT
@@ -59,7 +58,7 @@ public:
     }
 };
 
-
+*/
 
 
 class MainWindow : public QMainWindow
@@ -72,17 +71,18 @@ public:
 
 private:
     Ui::MainWindow *ui;
-    PixelTDialog pixelTDialog;
-    LFilterDialog lFilterDialog;
-    OperOrderDialog operOrderDialog;
+    //PixelTDialog pixelTDialog;
+    //LFilterDialog lFilterDialog;
+    //OperOrderDialog operOrderDialog;
     QTimer timer;
 
     VideoCapture *cap;
-    ImgViewer *visorS, *visorD, *visorHistoS, *visorHistoD;
+    ImgViewer *visorS, *visorD;
     Mat colorImage, grayImage, destColorImage, destGrayImage;
     bool winSelected;
     Rect imageWindow;
     bool colorSelected;
+    Net miRed;
 
     void updateHistogram(Mat image, ImgViewer * visor);
 
@@ -104,13 +104,15 @@ public slots:
     void erosion(Mat src, Mat &dst);
     void applySeveral();
     Mat metodoSwitch(int metodo, Mat src);
+    void inicializarRed();
+    void segmentar();
 
     /**************/
 
     void selectWindow(QPointF p, int w, int h);
     void deselectWindow(QPointF);
-    void controlGrayRanges(QTableWidgetItem*);
-    void controlKernelRanges(QTableWidgetItem*);
+   // void controlGrayRanges(QTableWidgetItem*);
+    //void controlKernelRanges(QTableWidgetItem*);
     void closeEvent(QCloseEvent *event);    
 };
 

@@ -18,6 +18,7 @@ MainWindow::MainWindow(QWidget *parent) :
     destGrayImage.create(240,320,CV_8UC1);
     destGrayImage.setTo(0);
 
+    //inicializarRed();
     //visorHistoS = new ImgViewer(260,150, (QImage *) NULL, ui->histoFrameS);
     //visorHistoD = new ImgViewer(260,150, (QImage *) NULL, ui->histoFrameD);
 
@@ -37,17 +38,19 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(visorS,SIGNAL(mouseSelection(QPointF,int,int)),this,SLOT(selectWindow(QPointF, int, int)));
     connect(visorS,SIGNAL(mouseClic(QPointF)),this,SLOT(deselectWindow(QPointF)));
 
+    connect(ui->segmentImageButton,SIGNAL(clicked(bool)),this,SLOT(segmentar(void)));
+
     //connect(ui->pixelTButton,SIGNAL(clicked()),&pixelTDialog,SLOT(show()));
-    connect(pixelTDialog.okButton,SIGNAL(clicked()),&pixelTDialog,SLOT(hide()));
-    connect(pixelTDialog.grayTransformW, SIGNAL(itemChanged(QTableWidgetItem*)), this, SLOT(controlGrayRanges(QTableWidgetItem*)));
+    //connect(pixelTDialog.okButton,SIGNAL(clicked()),&pixelTDialog,SLOT(hide()));
+    //connect(pixelTDialog.grayTransformW, SIGNAL(itemChanged(QTableWidgetItem*)), this, SLOT(controlGrayRanges(QTableWidgetItem*)));
 
     //connect(ui->kernelButton,SIGNAL(clicked()),&lFilterDialog,SLOT(show()));
-    connect(lFilterDialog.okButton,SIGNAL(clicked()),&lFilterDialog,SLOT(hide()));
-    connect(lFilterDialog.kernelWidget, SIGNAL(itemChanged(QTableWidgetItem*)), this, SLOT(controlKernelRanges(QTableWidgetItem*)));
+    //connect(lFilterDialog.okButton,SIGNAL(clicked()),&lFilterDialog,SLOT(hide()));
+    //connect(lFilterDialog.kernelWidget, SIGNAL(itemChanged(QTableWidgetItem*)), this, SLOT(controlKernelRanges(QTableWidgetItem*)));
 
 
     //connect(ui->operOrderButton,SIGNAL(clicked()),&operOrderDialog,SLOT(show()));
-    connect(operOrderDialog.okButton,SIGNAL(clicked()),&operOrderDialog,SLOT(hide()));
+    //connect(operOrderDialog.okButton,SIGNAL(clicked()),&operOrderDialog,SLOT(hide()));
 
 
     timer.start(30);
@@ -124,9 +127,13 @@ void MainWindow::compute()
     }
     visorS->update();
     visorD->update();
-    visorHistoS->update();
-    visorHistoD->update();
+    //visorHistoS->update();
+    //visorHistoD->update();
 
+}
+
+void MainWindow::inicializarRed(){
+    miRed = readNetFromCaffe("../proyVA4/fcn.prototxt","../proyVA4/fcn.caffemodel");
 }
 
 void MainWindow::updateHistogram(Mat image, ImgViewer * visor)
@@ -186,29 +193,50 @@ void MainWindow::change_color_gray(bool color)
 
 /***************************/
 
+void MainWindow::segmentar(){
+    Mat imagenFormateada = blobFromImage(colorImage, 1.0, Size(), mean(colorImage), true, false, CV_32F);
+    miRed.setInput(imagenFormateada);
+    miRed.forward();
+
+    int catMax=0;
+    for(int f=0;f<ui->imageWidthBox->value();f++){
+        for(int c=0; c<ui->ImageHeightBox->value();c++){
+            for(int cat=0; cat<20;cat++){ //for de la categoría
+            }
+            imgSegm.at<uchar>(f,c)=catMax;
+        }
+    }
+}
+
+
 void MainWindow::loadFromFile(){
+
 
     disconnect(&timer,SIGNAL(timeout()),this,SLOT(compute()));
     ui->captureButton->setCheckable(false);
     start_stop_capture(false);
+
 
     QString ruta = QFileDialog::getOpenFileName(this, "Open File", "/home/irene/Escritorio/VisionArtificial","Images (*.png *.xpm *.jpg)");
     std::string rutaImagen = ruta.toStdString();
     Mat loadImg = imread(rutaImagen);
 
     cv::resize(loadImg, loadImg, Size(320, 240));
+    //miRed.setInput();
+    //blobFromImage();
     cvtColor(loadImg,colorImage,COLOR_BGR2RGB);
     cvtColor(loadImg,grayImage,COLOR_BGR2GRAY);
 
     connect(&timer,SIGNAL(timeout()),this,SLOT(compute()));
     ui->captureButton->setCheckable(true);
     start_stop_capture(true);
+
 }
 
 
 void MainWindow::saveToFile(){
 
-    destColorImage.setTo(0);
+   /* destColorImage.setTo(0);
     destGrayImage.setTo(0);
 
     disconnect(&timer,SIGNAL(timeout()),this,SLOT(compute()));
@@ -226,11 +254,12 @@ void MainWindow::saveToFile(){
     }
 
     connect(&timer,SIGNAL(timeout()),this,SLOT(compute()));
+    */
 }
 
 
 void MainWindow::pixelTransformation(Mat src, Mat &dst){
-    int r;
+   /* int r;
     std::vector<uchar> lut;
     lut.resize(256);
 
@@ -252,7 +281,7 @@ void MainWindow::pixelTransformation(Mat src, Mat &dst){
     }
 
     cv::LUT(src,lut,dst);
-
+*/
 }
 
 //Umbralización
@@ -275,6 +304,7 @@ void MainWindow::mediumFilter(Mat src, Mat &dst){
 }
 
 void MainWindow::linealFilter(Mat src, Mat &dst){
+    /*
     Matx33f matrizKernel;
     for(int i = 0; i<3; i++){
         for(int j = 0; j<3; j++){
@@ -283,6 +313,7 @@ void MainWindow::linealFilter(Mat src, Mat &dst){
     }
     double addedValue = lFilterDialog.addedVBox->text().toDouble();
     cv::filter2D(src,dst,-1,matrizKernel,Point(-1,-1),addedValue,BORDER_DEFAULT);
+    */
 }
 
 void MainWindow::dilatation(Mat src, Mat &dst){
@@ -298,6 +329,7 @@ void MainWindow::erosion(Mat src, Mat &dst){
 }
 
 void MainWindow::applySeveral(){
+    /*
     destGrayImage.setTo(0);
 
     if(operOrderDialog.firstOperCheckBox->isChecked()){
@@ -336,7 +368,7 @@ void MainWindow::applySeveral(){
     } else{
         grayImage.copyTo(destGrayImage);
     }
-
+*/
 }
 
 
@@ -405,7 +437,7 @@ void MainWindow::deselectWindow(QPointF p)
     std::ignore = p;
     winSelected = false;
 }
-
+/*
 void MainWindow::controlKernelRanges(QTableWidgetItem* it)
 {
     bool ok;
@@ -424,11 +456,11 @@ void MainWindow::controlGrayRanges(QTableWidgetItem* it)
         it->setText("255");
 }
 
-
+*/
 void MainWindow::closeEvent(QCloseEvent *event)
 {
-    pixelTDialog.close();
-    lFilterDialog.close();
-    operOrderDialog.close();
+  //  pixelTDialog.close();
+    //lFilterDialog.close();
+    //operOrderDialog.close();
     event->accept();
 }
